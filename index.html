@@ -16,8 +16,9 @@
     --orange: #f05d23;
     --orange2:#ff8c5a;
     --green:  #2ecc71;
-    --green2: #27ae60;
     --yellow: #f1c40f;
+    --purple: #9b59b6;
+    --purple2:#c39bd3;
     --red:    #e74c3c;
     --fg:     #e8edf3;
     --fg2:    #9eb3c8;
@@ -29,691 +30,233 @@
     --font-mono:    'DM Mono', monospace;
     --font-body:    'Barlow', sans-serif;
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--navy);
-    color: var(--fg);
-    font-family: var(--font-body);
-    font-weight: 300;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* ── NOISE TEXTURE OVERLAY ── */
+  body { background: var(--navy); color: var(--fg); font-family: var(--font-body); font-weight: 300; min-height: 100vh; overflow-x: hidden; }
   body::before {
-    content: '';
-    position: fixed; inset: 0;
+    content: ''; position: fixed; inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
     pointer-events: none; z-index: 0;
   }
 
-  /* ── HERO ── */
-  .hero {
-    position: relative;
-    padding: 60px 48px 48px;
-    border-bottom: 1px solid var(--border);
-    overflow: hidden;
-  }
-  .hero::after {
-    content: '';
-    position: absolute; top: -80px; right: -120px;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(14,158,155,.12) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero-tag {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: .2em;
-    color: var(--teal);
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    opacity: 0; animation: fadeUp .5s .1s forwards;
-  }
-  .hero h1 {
-    font-family: var(--font-display);
-    font-size: clamp(56px, 8vw, 110px);
-    line-height: .95;
-    letter-spacing: .02em;
-    color: var(--fg);
-    opacity: 0; animation: fadeUp .5s .2s forwards;
-  }
+  /* HERO */
+  .hero { position: relative; padding: 60px 48px 48px; border-bottom: 1px solid var(--border); overflow: hidden; }
+  .hero::after { content: ''; position: absolute; top: -80px; right: -120px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(14,158,155,.12) 0%, transparent 70%); pointer-events: none; }
+  .hero-tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: .2em; color: var(--teal); text-transform: uppercase; margin-bottom: 12px; opacity: 0; animation: fadeUp .5s .1s forwards; }
+  .hero h1 { font-family: var(--font-display); font-size: clamp(56px, 8vw, 110px); line-height: .95; letter-spacing: .02em; color: var(--fg); opacity: 0; animation: fadeUp .5s .2s forwards; }
   .hero h1 span { color: var(--teal); }
-  .hero-sub {
-    margin-top: 20px;
-    font-size: 15px;
-    color: var(--fg2);
-    letter-spacing: .05em;
-    opacity: 0; animation: fadeUp .5s .3s forwards;
-  }
-  .hero-stats {
-    display: flex; gap: 32px; flex-wrap: wrap;
-    margin-top: 40px;
-    opacity: 0; animation: fadeUp .5s .4s forwards;
-  }
-  .stat-pill {
-    background: var(--card2);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 10px 20px;
-    display: flex; flex-direction: column; gap: 2px;
-  }
-  .stat-pill .label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: .15em;
-    color: var(--fg3);
-    text-transform: uppercase;
-  }
-  .stat-pill .value {
-    font-family: var(--font-display);
-    font-size: 28px;
-    color: var(--teal2);
-    line-height: 1;
-  }
+  .hero-sub { margin-top: 20px; font-size: 15px; color: var(--fg2); letter-spacing: .05em; opacity: 0; animation: fadeUp .5s .3s forwards; }
+  .hero-stats { display: flex; gap: 32px; flex-wrap: wrap; margin-top: 40px; opacity: 0; animation: fadeUp .5s .4s forwards; }
+  .stat-pill { background: var(--card2); border: 1px solid var(--border); border-radius: 4px; padding: 10px 20px; display: flex; flex-direction: column; gap: 2px; }
+  .stat-pill .label { font-family: var(--font-mono); font-size: 10px; letter-spacing: .15em; color: var(--fg3); text-transform: uppercase; }
+  .stat-pill .value { font-family: var(--font-display); font-size: 28px; color: var(--teal2); line-height: 1; }
 
-  /* ── NAV TABS ── */
-  .nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(13,27,42,.9);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 48px;
-    display: flex; gap: 0; overflow-x: auto;
-  }
-  .nav button {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-    color: var(--fg3);
-    background: none; border: none;
-    padding: 16px 20px;
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    white-space: nowrap;
-    transition: color .2s, border-color .2s;
-  }
+  /* NAV */
+  .nav { position: sticky; top: 0; z-index: 100; background: rgba(13,27,42,.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 48px; display: flex; gap: 0; overflow-x: auto; }
+  .nav button { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--fg3); background: none; border: none; padding: 16px 18px; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .2s, border-color .2s; }
   .nav button:hover { color: var(--fg2); }
   .nav button.active { color: var(--teal); border-bottom-color: var(--teal); }
+  .nav button.active.orange-tab { color: var(--orange2); border-bottom-color: var(--orange); }
+  .nav button.active.purple-tab { color: var(--purple2); border-bottom-color: var(--purple); }
 
-  /* ── MAIN LAYOUT ── */
+  /* LAYOUT */
   .main { padding: 48px; max-width: 1400px; }
-
   .section { display: none; }
   .section.active { display: block; animation: fadeIn .3s ease; }
-
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp  { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* ── SECTION HEADERS ── */
-  .section-header {
-    display: flex; align-items: baseline; gap: 16px;
-    margin-bottom: 32px;
-  }
-  .section-header h2 {
-    font-family: var(--font-display);
-    font-size: 48px;
-    letter-spacing: .04em;
-    color: var(--fg);
-    line-height: 1;
-  }
+  /* SECTION HEADERS */
+  .section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 32px; }
+  .section-header h2 { font-family: var(--font-display); font-size: 48px; letter-spacing: .04em; color: var(--fg); line-height: 1; }
   .section-header .accent { color: var(--teal); }
-  .section-header .tag {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: .2em;
-    color: var(--fg3);
-    text-transform: uppercase;
-  }
+  .section-header .accent-orange { color: var(--orange2); }
+  .section-header .accent-purple { color: var(--purple2); }
+  .section-header .tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: .2em; color: var(--fg3); text-transform: uppercase; }
 
-  /* ── WEEK GRID ── */
-  .week-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-    margin-bottom: 48px;
-  }
-  .day-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: border-color .2s, transform .15s;
-    position: relative;
-  }
-  .day-card:hover { border-color: var(--teal); transform: translateY(-2px); }
-  .day-card .card-accent {
-    height: 3px;
-    background: var(--teal);
-  }
+  /* WEEK GRID */
+  .week-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 16px; margin-bottom: 48px; }
+  .day-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; cursor: pointer; transition: border-color .2s, transform .15s; }
+  .day-card:hover { transform: translateY(-2px); }
+  .day-card.teal:hover   { border-color: var(--teal); }
+  .day-card.orange:hover { border-color: var(--orange); }
+  .day-card.purple:hover { border-color: var(--purple); }
+  .day-card.gray:hover   { border-color: var(--fg3); }
+  .card-accent { height: 3px; background: var(--teal); }
   .day-card.orange .card-accent { background: var(--orange); }
-  .day-card.green .card-accent  { background: var(--green); }
-  .day-card.gray .card-accent   { background: var(--fg3); }
-
-  .card-head {
-    padding: 20px 20px 14px;
-    border-bottom: 1px solid var(--border);
-  }
-  .card-day {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: .2em;
-    color: var(--fg3);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .card-title {
-    font-family: var(--font-display);
-    font-size: 26px;
-    letter-spacing: .04em;
-    color: var(--fg);
-    line-height: 1.05;
-  }
+  .day-card.purple .card-accent { background: var(--purple); }
+  .day-card.gray   .card-accent { background: var(--fg3); }
+  .card-head { padding: 20px 20px 14px; border-bottom: 1px solid var(--border); }
+  .card-day { font-family: var(--font-mono); font-size: 10px; letter-spacing: .2em; color: var(--fg3); text-transform: uppercase; margin-bottom: 6px; }
+  .card-title { font-family: var(--font-display); font-size: 26px; letter-spacing: .04em; color: var(--fg); line-height: 1.05; }
   .card-body { padding: 14px 20px 20px; }
-  .card-meta {
-    display: flex; gap: 12px; flex-wrap: wrap;
-    margin-bottom: 12px;
-  }
-  .badge {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: .1em;
-    padding: 3px 8px;
-    border-radius: 2px;
-    text-transform: uppercase;
-  }
-  .badge-teal  { background: rgba(14,158,155,.15); color: var(--teal2); border: 1px solid rgba(14,158,155,.3); }
-  .badge-orange{ background: rgba(240,93,35,.15);  color: var(--orange2); border: 1px solid rgba(240,93,35,.3); }
-  .badge-green { background: rgba(46,204,113,.15); color: var(--green);  border: 1px solid rgba(46,204,113,.3); }
-  .badge-gray  { background: rgba(90,122,150,.15); color: var(--fg2);    border: 1px solid rgba(90,122,150,.3); }
-
-  .card-exercises {
-    list-style: none;
-    display: flex; flex-direction: column; gap: 4px;
-  }
-  .card-exercises li {
-    font-size: 12px;
-    color: var(--fg2);
-    display: flex; align-items: center; gap: 6px;
-  }
-  .card-exercises li::before {
-    content: '';
-    width: 4px; height: 4px;
-    border-radius: 50%;
-    background: var(--teal);
-    flex-shrink: 0;
-  }
+  .card-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .badge { font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; padding: 3px 8px; border-radius: 2px; text-transform: uppercase; }
+  .badge-teal   { background: rgba(14,158,155,.15);  color: var(--teal2);   border: 1px solid rgba(14,158,155,.3); }
+  .badge-orange { background: rgba(240,93,35,.15);   color: var(--orange2); border: 1px solid rgba(240,93,35,.3); }
+  .badge-green  { background: rgba(46,204,113,.15);  color: var(--green);   border: 1px solid rgba(46,204,113,.3); }
+  .badge-purple { background: rgba(155,89,182,.15);  color: var(--purple2); border: 1px solid rgba(155,89,182,.3); }
+  .badge-gray   { background: rgba(90,122,150,.15);  color: var(--fg2);     border: 1px solid rgba(90,122,150,.3); }
+  .card-exercises { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .card-exercises li { font-size: 12px; color: var(--fg2); display: flex; align-items: center; gap: 6px; }
+  .card-exercises li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
   .day-card.orange .card-exercises li::before { background: var(--orange); }
-
-  .card-cta {
-    margin-top: 14px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: .15em;
-    color: var(--teal);
-    text-transform: uppercase;
-  }
+  .day-card.purple .card-exercises li::before { background: var(--purple); }
+  .card-cta { margin-top: 14px; font-family: var(--font-mono); font-size: 10px; letter-spacing: .15em; color: var(--teal); text-transform: uppercase; }
   .day-card.orange .card-cta { color: var(--orange2); }
+  .day-card.purple .card-cta { color: var(--purple2); }
 
-  /* ── WORKOUT DETAIL ── */
-  .workout-detail {
-    display: none;
-    animation: fadeIn .3s ease;
-  }
-  .workout-detail.active { display: block; }
-
-  .back-btn {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-    color: var(--fg3);
-    background: none; border: none;
-    cursor: pointer;
-    display: flex; align-items: center; gap: 8px;
-    margin-bottom: 32px;
-    padding: 0;
-    transition: color .2s;
-  }
+  /* BACK BTN */
+  .back-btn { font-family: var(--font-mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--fg3); background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 32px; padding: 0; transition: color .2s; }
   .back-btn:hover { color: var(--teal); }
   .back-btn::before { content: '←'; font-size: 14px; }
 
-  .workout-banner {
-    background: linear-gradient(135deg, var(--navy3) 0%, var(--card) 100%);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 36px 40px;
-    margin-bottom: 32px;
-    position: relative;
-    overflow: hidden;
-  }
-  .workout-banner::before {
-    content: '';
-    position: absolute; top: -60px; right: -60px;
-    width: 220px; height: 220px;
-    background: radial-gradient(circle, rgba(14,158,155,.1) 0%, transparent 70%);
-  }
+  /* WORKOUT BANNER */
+  .workout-banner { background: linear-gradient(135deg, var(--navy3) 0%, var(--card) 100%); border: 1px solid var(--border); border-radius: 8px; padding: 36px 40px; margin-bottom: 32px; position: relative; overflow: hidden; }
+  .workout-banner::before { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(14,158,155,.1) 0%, transparent 70%); }
   .workout-banner.orange::before { background: radial-gradient(circle, rgba(240,93,35,.1) 0%, transparent 70%); }
-  .workout-banner h2 {
-    font-family: var(--font-display);
-    font-size: 52px;
-    letter-spacing: .03em;
-    line-height: 1;
-    margin-bottom: 10px;
-  }
-  .workout-banner .sub {
-    font-size: 14px;
-    color: var(--fg2);
-    letter-spacing: .05em;
-  }
-  .phase-pills {
-    display: flex; gap: 8px; flex-wrap: wrap;
-    margin-top: 24px;
-  }
-  .phase-pill {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: .1em;
-    padding: 6px 14px;
-    border-radius: 2px;
-    text-transform: uppercase;
-  }
-  .ph1 { background: rgba(14,158,155,.2); color: var(--teal2); border: 1px solid rgba(14,158,155,.4); }
-  .ph2 { background: rgba(13,27,42,.8); color: var(--fg2); border: 1px solid var(--border); }
-  .ph3 { background: rgba(240,93,35,.2); color: var(--orange2); border: 1px solid rgba(240,93,35,.4); }
+  .workout-banner.purple::before { background: radial-gradient(circle, rgba(155,89,182,.12) 0%, transparent 70%); }
+  .workout-banner h2 { font-family: var(--font-display); font-size: 52px; letter-spacing: .03em; line-height: 1; margin-bottom: 10px; }
+  .workout-banner .sub { font-size: 14px; color: var(--fg2); letter-spacing: .05em; }
+  .phase-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 24px; }
+  .phase-pill { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; padding: 6px 14px; border-radius: 2px; text-transform: uppercase; }
+  .ph1 { background: rgba(14,158,155,.2);  color: var(--teal2);   border: 1px solid rgba(14,158,155,.4); }
+  .ph2 { background: rgba(13,27,42,.8);    color: var(--fg2);     border: 1px solid var(--border); }
+  .ph3 { background: rgba(240,93,35,.2);   color: var(--orange2); border: 1px solid rgba(240,93,35,.4); }
 
-  /* ── EXERCISE TABLE ── */
-  .block-label {
-    font-family: var(--font-display);
-    font-size: 28px;
-    letter-spacing: .06em;
-    color: var(--fg);
-    margin: 36px 0 16px;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .block-label .line {
-    flex: 1; height: 1px; background: var(--border);
-  }
-  .block-label .tag {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: .2em;
-    color: var(--teal);
-    text-transform: uppercase;
-  }
+  /* BLOCK LABEL */
+  .block-label { font-family: var(--font-display); font-size: 28px; letter-spacing: .06em; color: var(--fg); margin: 36px 0 16px; display: flex; align-items: center; gap: 12px; }
+  .block-label .line { flex: 1; height: 1px; background: var(--border); }
+  .block-label .tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: .2em; color: var(--teal); text-transform: uppercase; }
+  .block-label.orange-label { color: var(--orange2); }
+  .block-label.orange-label .tag { color: var(--orange2); }
+  .block-label.green-label  { color: var(--green); }
+  .block-label.green-label  .tag { color: var(--green); }
+  .block-label.purple-label { color: var(--purple2); }
+  .block-label.purple-label .tag { color: var(--purple2); }
 
-  .ex-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-  }
-  .ex-table thead tr {
-    background: var(--navy3);
-  }
-  .ex-table th {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: var(--fg3);
-    padding: 12px 16px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
+  /* EXERCISE TABLE */
+  .ex-table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .ex-table thead tr { background: var(--navy3); }
+  .ex-table th { font-family: var(--font-mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--fg3); padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
   .ex-table th.center { text-align: center; }
-  .ex-table tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background .15s;
-  }
+  .ex-table tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
   .ex-table tbody tr:last-child { border-bottom: none; }
   .ex-table tbody tr:hover { background: var(--card2); }
-  .ex-table td {
-    padding: 14px 16px;
-    vertical-align: top;
-  }
+  .ex-table td { padding: 14px 16px; vertical-align: top; }
   .ex-table td.center { text-align: center; }
-  .ex-num {
-    font-family: var(--font-display);
-    font-size: 22px;
-    color: var(--border);
-    line-height: 1;
-  }
-  .ex-name {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--fg);
-    margin-bottom: 4px;
-  }
-  .ex-tip {
-    font-size: 12px;
-    color: var(--fg3);
-    font-style: italic;
-    line-height: 1.4;
-  }
-  .ex-val {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--fg2);
-    padding-top: 4px;
-  }
-  .log-input {
-    background: var(--navy2);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    color: var(--fg);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    padding: 6px 10px;
-    width: 100%;
-    min-width: 120px;
-    transition: border-color .2s;
-    resize: none;
-  }
+  .ex-num { font-family: var(--font-display); font-size: 22px; color: var(--border); line-height: 1; }
+  .ex-name { font-size: 15px; font-weight: 600; color: var(--fg); margin-bottom: 4px; }
+  .ex-tip  { font-size: 12px; color: var(--fg3); font-style: italic; line-height: 1.4; }
+  .ex-val  { font-family: var(--font-mono); font-size: 13px; color: var(--fg2); padding-top: 4px; }
+  .muscle-tag { display: inline-block; font-family: var(--font-mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; padding: 2px 6px; border-radius: 2px; margin-top: 5px; }
+  .mt-legs   { background: rgba(240,93,35,.12); color: var(--orange2); border: 1px solid rgba(240,93,35,.25); }
+  .mt-upper  { background: rgba(14,158,155,.12); color: var(--teal2);  border: 1px solid rgba(14,158,155,.25); }
+  .mt-core   { background: rgba(241,196,15,.12); color: var(--yellow); border: 1px solid rgba(241,196,15,.25); }
+  .mt-back   { background: rgba(46,204,113,.12); color: var(--green);  border: 1px solid rgba(46,204,113,.25); }
+  .log-input { background: var(--navy2); border: 1px solid var(--border); border-radius: 3px; color: var(--fg); font-family: var(--font-mono); font-size: 12px; padding: 6px 10px; width: 100%; min-width: 120px; transition: border-color .2s; resize: none; }
   .log-input:focus { outline: none; border-color: var(--teal); }
   .log-input.orange:focus { border-color: var(--orange); }
+  .log-input.purple:focus { border-color: var(--purple); }
 
-  /* ── CARDIO BLOCK ── */
-  .cardio-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 12px;
-    margin-top: 8px;
-  }
-  .cardio-block {
-    background: var(--navy2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 16px;
-    border-left: 3px solid var(--green);
-    transition: border-color .2s;
-  }
-  .cardio-block:hover { border-color: var(--green); }
-  .cardio-block .c-name {
-    font-family: var(--font-display);
-    font-size: 18px;
-    letter-spacing: .04em;
-    color: var(--fg);
-    margin-bottom: 6px;
-  }
-  .cardio-block .c-duration {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--green);
-    letter-spacing: .1em;
-    margin-bottom: 8px;
-  }
-  .cardio-block .c-zone {
-    display: inline-block;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 2px;
-    background: rgba(46,204,113,.15);
-    color: var(--green);
-    border: 1px solid rgba(46,204,113,.3);
-    letter-spacing: .1em;
-    margin-bottom: 8px;
-  }
-  .cardio-block .c-detail {
-    font-size: 12px;
-    color: var(--fg2);
-    line-height: 1.5;
-  }
+  /* CARDIO BLOCKS */
+  .cardio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; margin-top: 8px; }
+  .cardio-block { background: var(--navy2); border: 1px solid var(--border); border-radius: 6px; padding: 16px; border-left: 3px solid var(--green); }
+  .cardio-block.orange-card { border-left-color: var(--orange); }
+  .cardio-block.purple-card { border-left-color: var(--purple); }
+  .cardio-block .c-name { font-family: var(--font-display); font-size: 18px; letter-spacing: .04em; color: var(--fg); margin-bottom: 6px; }
+  .cardio-block .c-duration { font-family: var(--font-mono); font-size: 11px; color: var(--green); letter-spacing: .1em; margin-bottom: 6px; }
+  .cardio-block.orange-card .c-duration { color: var(--orange2); }
+  .cardio-block.purple-card .c-duration { color: var(--purple2); }
+  .cardio-block .c-zone { display: inline-block; font-family: var(--font-mono); font-size: 10px; padding: 2px 6px; border-radius: 2px; background: rgba(46,204,113,.15); color: var(--green); border: 1px solid rgba(46,204,113,.3); letter-spacing: .1em; margin-bottom: 8px; }
+  .cardio-block.orange-card .c-zone { background: rgba(240,93,35,.15); color: var(--orange2); border-color: rgba(240,93,35,.3); }
+  .cardio-block.purple-card .c-zone { background: rgba(155,89,182,.15); color: var(--purple2); border-color: rgba(155,89,182,.3); }
+  .cardio-block .c-detail { font-size: 12px; color: var(--fg2); line-height: 1.5; }
 
-  /* ── PROGRESS SECTION ── */
-  .progress-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-    margin-bottom: 40px;
-  }
-  .metric-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 24px;
-  }
-  .metric-card h3 {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--fg3);
-    margin-bottom: 16px;
-  }
-  .metric-weeks {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-  }
-  .metric-week label {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--fg3);
-    display: block;
-    margin-bottom: 4px;
-  }
-  .metric-week input {
-    width: 100%;
-    background: var(--navy2);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    color: var(--fg);
-    font-family: var(--font-mono);
-    font-size: 13px;
-    padding: 6px 8px;
-    text-align: center;
-    transition: border-color .2s;
-  }
+  /* YOGA POSES GRID */
+  .yoga-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .yoga-card { background: var(--navy2); border: 1px solid var(--border); border-left: 3px solid var(--purple); border-radius: 6px; padding: 14px 16px; }
+  .yoga-card .y-name { font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 4px; }
+  .yoga-card .y-dur  { font-family: var(--font-mono); font-size: 10px; color: var(--purple2); letter-spacing: .1em; margin-bottom: 6px; }
+  .yoga-card .y-tip  { font-size: 12px; color: var(--fg3); line-height: 1.4; font-style: italic; }
+
+  /* PROGRESS */
+  .progress-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 40px; }
+  .metric-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 24px; }
+  .metric-card h3 { font-family: var(--font-mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--fg3); margin-bottom: 16px; }
+  .metric-weeks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .metric-week label { font-family: var(--font-mono); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--fg3); display: block; margin-bottom: 4px; }
+  .metric-week input { width: 100%; background: var(--navy2); border: 1px solid var(--border); border-radius: 3px; color: var(--fg); font-family: var(--font-mono); font-size: 13px; padding: 6px 8px; text-align: center; transition: border-color .2s; }
   .metric-week input:focus { outline: none; border-color: var(--teal); }
 
-  /* ── SAVE / CLEAR BTN ── */
-  .btn-row { display: flex; gap: 12px; margin-bottom: 32px; }
-  .btn {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-    padding: 10px 24px;
-    border-radius: 3px;
-    border: none;
-    cursor: pointer;
-    transition: all .2s;
-  }
-  .btn-primary {
-    background: var(--teal);
-    color: var(--navy);
-  }
+  /* SESSION LOG BAR */
+  .session-log { margin-top: 24px; padding: 16px 20px; background: var(--card); border: 1px solid var(--border); border-radius: 6px; }
+  .session-log.teal-log   { border-left: 3px solid var(--teal); }
+  .session-log.orange-log { border-left: 3px solid var(--orange); }
+  .session-log.green-log  { border-left: 3px solid var(--green); }
+  .session-log.purple-log { border-left: 3px solid var(--purple); }
+  .log-fields { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
+  .log-field label { font-family: var(--font-mono); font-size: 10px; color: var(--fg3); letter-spacing: .12em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+
+  /* BTN */
+  .btn-row { display: flex; gap: 12px; margin-top: 16px; align-items: center; }
+  .btn { font-family: var(--font-mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; padding: 10px 24px; border-radius: 3px; border: none; cursor: pointer; transition: all .2s; }
+  .btn-primary { background: var(--teal); color: var(--navy); }
   .btn-primary:hover { background: var(--teal2); }
-  .btn-ghost {
-    background: transparent;
-    color: var(--fg3);
-    border: 1px solid var(--border);
-  }
+  .btn-primary.orange-btn { background: var(--orange); color: var(--navy); }
+  .btn-primary.orange-btn:hover { background: var(--orange2); }
+  .btn-primary.purple-btn { background: var(--purple); color: var(--fg); }
+  .btn-primary.purple-btn:hover { background: var(--purple2); color: var(--navy); }
+  .btn-ghost { background: transparent; color: var(--fg3); border: 1px solid var(--border); }
   .btn-ghost:hover { border-color: var(--fg3); color: var(--fg2); }
-  .save-msg {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--green);
-    letter-spacing: .1em;
-    opacity: 0;
-    transition: opacity .3s;
-    align-self: center;
-  }
+  .save-msg { font-family: var(--font-mono); font-size: 11px; color: var(--green); letter-spacing: .1em; opacity: 0; transition: opacity .3s; }
   .save-msg.show { opacity: 1; }
 
-  /* ── RUNNING LOG TABLE ── */
-  .run-log {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-top: 8px;
-  }
+  /* PLAN TABLE */
+  .plan-table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .plan-table thead tr { background: var(--navy3); }
+  .plan-table th { font-family: var(--font-mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--fg3); padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+  .plan-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+  .plan-table tbody tr:last-child td { border-bottom: none; }
+  .plan-table tbody tr:hover { background: var(--card2); }
+  .plan-table .day-label { font-family: var(--font-display); font-size: 20px; letter-spacing: .04em; }
+  .bonus-row td { background: rgba(240,93,35,.05) !important; }
+
+  /* RUNNING LOG */
+  .run-log { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
   .run-log thead tr { background: var(--navy3); }
-  .run-log th {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-    color: var(--fg3);
-    padding: 10px 14px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
-  .run-log td {
-    border-bottom: 1px solid var(--border);
-    padding: 6px 8px;
-  }
+  .run-log th { font-family: var(--font-mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--fg3); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  .run-log td { border-bottom: 1px solid var(--border); padding: 6px 8px; }
   .run-log tbody tr:last-child td { border-bottom: none; }
-  .run-log .wk-label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--orange2);
-    letter-spacing: .1em;
-  }
-  .run-log input {
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid var(--border);
-    color: var(--fg);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    padding: 4px 6px;
-    width: 100%;
-    transition: border-color .2s;
-  }
+  .run-log .wk-label { font-family: var(--font-mono); font-size: 11px; color: var(--orange2); letter-spacing: .1em; }
+  .run-log input { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--fg); font-family: var(--font-mono); font-size: 12px; padding: 4px 6px; width: 100%; transition: border-color .2s; }
   .run-log input:focus { outline: none; border-color: var(--orange); }
 
-  /* ── HR ZONE TABLE ── */
-  .zone-table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    background: var(--card);
-  }
-  .zone-table td {
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-    font-size: 14px;
-  }
+  /* HR ZONES */
+  .zone-table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: var(--card); }
+  .zone-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
   .zone-table tr:last-child td { border-bottom: none; }
-  .zone-table .z-name {
-    font-family: var(--font-display);
-    font-size: 22px;
-    letter-spacing: .04em;
-    width: 60px;
-  }
-  .zone-table .z-bpm {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--fg2);
-    width: 130px;
-  }
-  .zone-table .z-bar-wrap { padding: 10px 16px; }
-  .z-bar {
-    height: 6px;
-    border-radius: 3px;
-    background: var(--teal);
-    transition: width .3s;
-  }
+  .zone-table .z-name { font-family: var(--font-display); font-size: 22px; letter-spacing: .04em; width: 60px; }
+  .zone-table .z-bpm  { font-family: var(--font-mono); font-size: 13px; color: var(--fg2); width: 130px; }
+  .z-bar { height: 6px; border-radius: 3px; }
   .z1 .z-bar { background: #3498db; width: 20%; }
   .z2 .z-bar { background: var(--green); width: 40%; }
   .z3 .z-bar { background: var(--yellow); width: 60%; }
   .z4 .z-bar { background: var(--orange); width: 80%; }
   .z5 .z-bar { background: var(--red); width: 100%; }
 
-  /* ── PLAN OVERVIEW TABLE ── */
-  .plan-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-  }
-  .plan-table thead tr { background: var(--navy3); }
-  .plan-table th {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-    color: var(--fg3);
-    padding: 12px 16px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
-  .plan-table td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-    vertical-align: middle;
-  }
-  .plan-table tbody tr:last-child td { border-bottom: none; }
-  .plan-table tbody tr:hover { background: var(--card2); }
-  .plan-table .day-label {
-    font-family: var(--font-display);
-    font-size: 20px;
-    letter-spacing: .04em;
-    color: var(--fg);
-  }
-  .plan-table .finisher {
-    font-size: 12px;
-    color: var(--green);
-    margin-top: 4px;
-  }
-  .bonus-row {
-    background: rgba(240,93,35,.06) !important;
-    border: 1px solid rgba(240,93,35,.2) !important;
-  }
-
-  /* ── SCROLLBAR ── */
+  /* SCROLLBAR */
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: var(--navy); }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--fg3); }
 
-  /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
     .hero { padding: 36px 24px 32px; }
     .main { padding: 24px; }
-    .nav { padding: 0 16px; }
+    .nav { padding: 0 12px; }
     .hero h1 { font-size: 52px; }
-    .ex-table { font-size: 12px; }
     .ex-table th, .ex-table td { padding: 10px 10px; }
-  }
-
-  /* ── TOOLTIP ── */
-  [data-tip] { position: relative; cursor: help; }
-  [data-tip]:hover::after {
-    content: attr(data-tip);
-    position: absolute; bottom: calc(100% + 6px); left: 50%;
-    transform: translateX(-50%);
-    background: var(--navy3);
-    border: 1px solid var(--border);
-    color: var(--fg2);
-    font-family: var(--font-mono);
-    font-size: 11px;
-    padding: 6px 10px;
-    border-radius: 4px;
-    white-space: nowrap;
-    z-index: 50;
-    pointer-events: none;
   }
 </style>
 </head>
@@ -721,12 +264,12 @@
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-tag">12-Week Performance Plan · Home Gym Edition</div>
+  <div class="hero-tag">12-Week Performance Plan · Revised v2 · Home Gym Edition</div>
   <h1>TRAIN<br><span>SMARTER</span></h1>
   <div class="hero-sub">42 yrs · 6'4" · 220 lbs · 5–6 days/week · Lean · Muscle · Endurance</div>
   <div class="hero-stats">
     <div class="stat-pill"><span class="label">Start Weight</span><span class="value">220 lbs</span></div>
-    <div class="stat-pill"><span class="label">Target Weight</span><span class="value">205–212</span></div>
+    <div class="stat-pill"><span class="label">Target</span><span class="value">205–212</span></div>
     <div class="stat-pill"><span class="label">Training Days</span><span class="value">5–6 / wk</span></div>
     <div class="stat-pill"><span class="label">Duration</span><span class="value">12 Wks</span></div>
     <div class="stat-pill"><span class="label">Est. Max HR</span><span class="value">178 bpm</span></div>
@@ -735,248 +278,153 @@
 
 <!-- NAV -->
 <nav class="nav">
-  <button class="active" onclick="showSection('overview')">Overview</button>
-  <button onclick="showSection('monday')">Mon · Lower</button>
-  <button onclick="showSection('tuesday')">Tue · Upper</button>
-  <button onclick="showSection('wednesday')">Wed · Push/Pull</button>
-  <button onclick="showSection('thursday')">Thu · Cardio</button>
-  <button onclick="showSection('friday')">Fri · Bootcamp</button>
-  <button onclick="showSection('saturday')">Sat · Long Run</button>
-  <button onclick="showSection('progress')">Progress</button>
+  <button class="active"        onclick="showSection('overview','','')">Overview</button>
+  <button                       onclick="showSection('monday','','')">Mon · Lower</button>
+  <button                       onclick="showSection('tuesday','','')">Tue · Upper</button>
+  <button                       onclick="showSection('wednesday','orange-tab','')">Wed · Full Body</button>
+  <button                       onclick="showSection('thursday','orange-tab','')">Thu · Heavy Legs</button>
+  <button                       onclick="showSection('friday','orange-tab','')">Fri · Bootcamp</button>
+  <button                       onclick="showSection('saturday','orange-tab','')">Sat · Long Run</button>
+  <button                       onclick="showSection('sunday','purple-tab','')">Sun · Yoga</button>
+  <button                       onclick="showSection('progress','','')">Progress</button>
 </nav>
 
 <div class="main">
 
-<!-- ═══════════════════════════════════════════════════════ OVERVIEW -->
+<!-- ══════════════════════════════════════════ OVERVIEW -->
 <div id="overview" class="section active">
-  <div class="section-header">
-    <h2>WEEKLY <span class="accent">SCHEDULE</span></h2>
-    <span class="tag">Click a day to view full workout</span>
-  </div>
+  <div class="section-header"><h2>WEEKLY <span class="accent">SCHEDULE</span></h2><span class="tag">Click any day to open workout</span></div>
 
   <div class="week-grid">
-    <!-- Monday -->
-    <div class="day-card teal" onclick="showSection('monday')">
+    <div class="day-card teal" onclick="showSection('monday','','')">
       <div class="card-accent"></div>
-      <div class="card-head">
-        <div class="card-day">Monday</div>
-        <div class="card-title">Lower Body<br>Strength</div>
-      </div>
+      <div class="card-head"><div class="card-day">Monday</div><div class="card-title">Lower Body<br>Strength</div></div>
       <div class="card-body">
-        <div class="card-meta">
-          <span class="badge badge-teal">70–80 min</span>
-          <span class="badge badge-green">+Run Intervals</span>
-        </div>
-        <ul class="card-exercises">
-          <li>Barbell Back Squat</li>
-          <li>Romanian Deadlift</li>
-          <li>Bulgarian Split Squat</li>
-          <li>Goblet Squat · Lunges</li>
-          <li>Calf Raise · Dead Bug</li>
-        </ul>
+        <div class="card-meta"><span class="badge badge-teal">70–80 min</span><span class="badge badge-green">+Run Intervals</span></div>
+        <ul class="card-exercises"><li>Barbell Back Squat</li><li>Romanian Deadlift</li><li>Bulgarian Split Squat</li><li>Goblet Squat · Lunges</li><li>Calf Raise · Dead Bug</li></ul>
         <div class="card-cta">View Workout →</div>
       </div>
     </div>
 
-    <!-- Tuesday -->
-    <div class="day-card teal" onclick="showSection('tuesday')">
+    <div class="day-card teal" onclick="showSection('tuesday','','')">
       <div class="card-accent"></div>
-      <div class="card-head">
-        <div class="card-day">Tuesday</div>
-        <div class="card-title">Upper Body<br>Strength</div>
-      </div>
+      <div class="card-head"><div class="card-day">Tuesday</div><div class="card-title">Upper Body<br>Strength</div></div>
       <div class="card-body">
-        <div class="card-meta">
-          <span class="badge badge-teal">70–80 min</span>
-          <span class="badge badge-green">+Bike Intervals</span>
-        </div>
-        <ul class="card-exercises">
-          <li>Barbell Bench Press</li>
-          <li>Dumbbell Row</li>
-          <li>Overhead Press</li>
-          <li>Pull-Ups · Incline Press</li>
-          <li>Hammer Curl + Dips</li>
-        </ul>
+        <div class="card-meta"><span class="badge badge-teal">70–80 min</span><span class="badge badge-green">+Bike Intervals</span></div>
+        <ul class="card-exercises"><li>Barbell Bench Press</li><li>Dumbbell Row</li><li>Overhead Press</li><li>Pull-Ups · Incline Press</li><li>Hammer Curl + Dips</li></ul>
         <div class="card-cta">View Workout →</div>
       </div>
     </div>
 
-    <!-- Wednesday -->
-    <div class="day-card orange" onclick="showSection('wednesday')">
+    <div class="day-card orange" onclick="showSection('wednesday','orange-tab','')">
       <div class="card-accent"></div>
-      <div class="card-head">
-        <div class="card-day">Wednesday</div>
-        <div class="card-title">Push / Pull<br>Hypertrophy</div>
-      </div>
+      <div class="card-head"><div class="card-day">Wednesday</div><div class="card-title">Full Body<br>Hypertrophy</div></div>
       <div class="card-body">
-        <div class="card-meta">
-          <span class="badge badge-orange">70–80 min</span>
-          <span class="badge badge-green">+Row Intervals</span>
-        </div>
-        <ul class="card-exercises">
-          <li>DB Shoulder Press</li>
-          <li>Lateral Raise · Chest Fly</li>
-          <li>Renegade Row</li>
-          <li>Tricep Extension · Curl</li>
-          <li>Ab Wheel / Hollow Hold</li>
-        </ul>
+        <div class="card-meta"><span class="badge badge-orange">75–85 min</span><span class="badge badge-green">+Row Intervals</span></div>
+        <ul class="card-exercises"><li>DB Shoulder Press · Lateral Raise</li><li>Chest Fly · Renegade Row</li><li>Goblet Squat · DB RDL</li><li>Reverse Lunge · Tricep Ext</li><li>Bicep Curl · Ab Wheel</li></ul>
         <div class="card-cta">View Workout →</div>
       </div>
     </div>
 
-    <!-- Thursday -->
-    <div class="day-card teal" onclick="showSection('thursday')">
+    <div class="day-card orange" onclick="showSection('thursday','orange-tab','')">
       <div class="card-accent"></div>
-      <div class="card-head">
-        <div class="card-day">Thursday</div>
-        <div class="card-title">Cardio<br>Endurance</div>
-      </div>
+      <div class="card-head"><div class="card-day">Thursday</div><div class="card-title">Heavy Leg Day<br>Low Rep</div></div>
       <div class="card-body">
-        <div class="card-meta">
-          <span class="badge badge-teal">50–60 min</span>
-          <span class="badge badge-teal">Rotate: Run/Bike/Row</span>
-        </div>
-        <ul class="card-exercises">
-          <li>Option A — Treadmill Intervals</li>
-          <li>Option B — Peloton Pyramids</li>
-          <li>Option C — 2000m Row + Steady</li>
-        </ul>
+        <div class="card-meta"><span class="badge badge-orange">60–70 min</span><span class="badge badge-orange">Strength Focus</span></div>
+        <ul class="card-exercises"><li>Conventional Deadlift</li><li>Front Rack Barbell Squat</li><li>Bulgarian Split Squat</li><li>Barbell Hip Thrust</li><li>Nordic Curl / Leg Curl</li></ul>
         <div class="card-cta">View Workout →</div>
       </div>
     </div>
 
-    <!-- Friday -->
-    <div class="day-card orange" onclick="showSection('friday')">
+    <div class="day-card orange" onclick="showSection('friday','orange-tab','')">
       <div class="card-accent"></div>
-      <div class="card-head">
-        <div class="card-day">Friday</div>
-        <div class="card-title">Peloton<br>Bootcamp</div>
-      </div>
+      <div class="card-head"><div class="card-day">Friday</div><div class="card-title">Peloton<br>Bootcamp</div></div>
       <div class="card-body">
-        <div class="card-meta">
-          <span class="badge badge-orange">60–70 min</span>
-          <span class="badge badge-orange">+Battle Ropes</span>
-        </div>
-        <ul class="card-exercises">
-          <li>Peloton 45 min Bootcamp</li>
-          <li>Run/Bike alternating blocks</li>
-          <li>Battle Ropes Finisher (×10)</li>
-        </ul>
+        <div class="card-meta"><span class="badge badge-orange">60–70 min</span><span class="badge badge-orange">+Battle Ropes</span></div>
+        <ul class="card-exercises"><li>Peloton 45 min Bootcamp</li><li>Run/Bike alternating blocks</li><li>Battle Ropes Finisher (×10)</li></ul>
         <div class="card-cta">View Workout →</div>
       </div>
     </div>
 
-    <!-- Saturday -->
-    <div class="day-card orange" onclick="showSection('saturday')">
+    <div class="day-card orange" onclick="showSection('saturday','orange-tab','')">
       <div class="card-accent"></div>
-      <div class="card-head">
-        <div class="card-day">Saturday</div>
-        <div class="card-title">Long Run<br>3–5 Miles</div>
-      </div>
+      <div class="card-head"><div class="card-day">Saturday</div><div class="card-title">Long Run<br>3–5 Miles</div></div>
       <div class="card-body">
-        <div class="card-meta">
-          <span class="badge badge-orange">40–60 min</span>
-          <span class="badge badge-orange">Z2–Z3</span>
-        </div>
-        <ul class="card-exercises">
-          <li>Warmup walk 5 min</li>
-          <li>Conversational pace run</li>
-          <li>Optional row cooldown</li>
-          <li>Mobility 10 min</li>
-        </ul>
+        <div class="card-meta"><span class="badge badge-orange">40–60 min</span><span class="badge badge-orange">Z2–Z3</span></div>
+        <ul class="card-exercises"><li>Warmup walk 5 min</li><li>Conversational pace run</li><li>Optional row cooldown</li><li>Mobility 10 min</li></ul>
         <div class="card-cta">View Workout →</div>
       </div>
     </div>
 
-    <!-- Sunday -->
-    <div class="day-card gray" onclick="showSection('progress')">
+    <div class="day-card purple" onclick="showSection('sunday','purple-tab','')">
       <div class="card-accent"></div>
-      <div class="card-head">
-        <div class="card-day">Sunday</div>
-        <div class="card-title">Active<br>Recovery</div>
-      </div>
+      <div class="card-head"><div class="card-day">Sunday</div><div class="card-title">Yoga<br>45 Minutes</div></div>
       <div class="card-body">
-        <div class="card-meta">
-          <span class="badge badge-gray">Optional</span>
-          <span class="badge badge-gray">Z1 Only</span>
-        </div>
-        <ul class="card-exercises">
-          <li>Light walk</li>
-          <li>Hip flexor + thoracic mobility</li>
-          <li>Foam rolling</li>
-          <li>7.5–8.5 hrs sleep target</li>
-        </ul>
-        <div class="card-cta">Track Progress →</div>
+        <div class="card-meta"><span class="badge badge-purple">45 min</span><span class="badge badge-purple">Sculpt or Flow</span></div>
+        <ul class="card-exercises"><li>Sculpt — strength-based flows</li><li>Flow — mobility & recovery</li><li>Breathwork · Hip openers</li><li>Active recovery for the week</li></ul>
+        <div class="card-cta">View Session →</div>
       </div>
     </div>
   </div>
 
-  <!-- Full schedule table -->
-  <div class="section-header" style="margin-top:48px;">
-    <h2>FULL <span class="accent">SCHEDULE</span></h2>
-  </div>
+  <!-- Schedule table -->
+  <div class="section-header" style="margin-top:48px;"><h2>FULL <span class="accent">SCHEDULE</span></h2></div>
   <table class="plan-table">
-    <thead>
-      <tr>
-        <th>Day</th><th>Session</th><th>Duration</th>
-        <th>Wks 1–4</th><th>Wks 5–8</th><th>Wks 9–12</th>
-        <th>Cardio Finisher</th>
-      </tr>
-    </thead>
+    <thead><tr><th>Day</th><th>Session</th><th>Duration</th><th>Wks 1–4</th><th>Wks 5–8</th><th>Wks 9–12</th><th>Cardio / Finisher</th></tr></thead>
     <tbody>
       <tr>
-        <td><div class="day-label">MON</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);">Lower Body</div></td>
+        <td><div class="day-label" style="color:var(--teal2);">MON</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);">Lower Body</div></td>
         <td>Squat Rack Strength</td><td><span class="badge badge-teal">70–80 min</span></td>
         <td style="font-family:var(--font-mono);font-size:12px;color:var(--teal);">3×12 mod</td>
         <td style="font-family:var(--font-mono);font-size:12px;color:var(--fg2);">4×8 heavy</td>
         <td style="font-family:var(--font-mono);font-size:12px;color:var(--orange2);">5×5 peak</td>
-        <td><div style="color:var(--green);font-size:13px;">🏃 Treadmill — 8×(1 min hard / 1 min walk)</div></td>
+        <td style="color:var(--green);font-size:13px;">🏃 Treadmill — 8×(1 min hard / 1 min walk)</td>
       </tr>
       <tr>
-        <td><div class="day-label">TUE</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);">Upper Body</div></td>
+        <td><div class="day-label" style="color:var(--teal2);">TUE</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);">Upper Body</div></td>
         <td>Pressing + Pulling</td><td><span class="badge badge-teal">70–80 min</span></td>
         <td style="font-family:var(--font-mono);font-size:12px;color:var(--teal);">3×12 mod</td>
         <td style="font-family:var(--font-mono);font-size:12px;color:var(--fg2);">4×8 heavy</td>
         <td style="font-family:var(--font-mono);font-size:12px;color:var(--orange2);">5×5 peak</td>
-        <td><div style="color:var(--green);font-size:13px;">🚴 Peloton — 5×(2 min climb / 1 min easy)</div></td>
+        <td style="color:var(--green);font-size:13px;">🚴 Peloton — 5×(2 min climb / 1 min easy)</td>
       </tr>
       <tr>
-        <td><div class="day-label">WED</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);">Push/Pull</div></td>
-        <td>Hypertrophy Volume</td><td><span class="badge badge-orange">70–80 min</span></td>
+        <td><div class="day-label" style="color:var(--orange2);">WED</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);">Full Body</div></td>
+        <td>Hypertrophy — Upper + Lower</td><td><span class="badge badge-orange">75–85 min</span></td>
         <td style="font-family:var(--font-mono);font-size:12px;color:var(--teal);">3×12 ctrl</td>
         <td style="font-family:var(--font-mono);font-size:12px;color:var(--fg2);">4×10</td>
         <td style="font-family:var(--font-mono);font-size:12px;color:var(--orange2);">4×12 drop</td>
-        <td><div style="color:var(--green);font-size:13px;">🚣 Rower — 6×(500m hard / 2 min rest)</div></td>
+        <td style="color:var(--green);font-size:13px;">🚣 Rower — 6×(500m hard / 2 min rest)</td>
       </tr>
       <tr>
-        <td><div class="day-label">THU</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);">Cardio</div></td>
-        <td>Endurance (rotate)</td><td><span class="badge badge-teal">50–60 min</span></td>
-        <td style="font-family:var(--font-mono);font-size:12px;color:var(--teal);">1 interval</td>
-        <td style="font-family:var(--font-mono);font-size:12px;color:var(--fg2);">2 intervals</td>
-        <td style="font-family:var(--font-mono);font-size:12px;color:var(--orange2);">2–3 intrvls</td>
-        <td><div style="color:var(--fg3);font-size:13px;">Dedicated cardio day — no lifting</div></td>
+        <td><div class="day-label" style="color:var(--orange2);">THU</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);">Heavy Legs</div></td>
+        <td>Deadlift + Squat Strength</td><td><span class="badge badge-orange">60–70 min</span></td>
+        <td style="font-family:var(--font-mono);font-size:12px;color:var(--teal);">4×5 heavy</td>
+        <td style="font-family:var(--font-mono);font-size:12px;color:var(--fg2);">5×3 heavier</td>
+        <td style="font-family:var(--font-mono);font-size:12px;color:var(--orange2);">5×3 + AMRAP</td>
+        <td style="color:var(--fg3);font-size:13px;">Strength day — no cardio finisher</td>
       </tr>
       <tr>
-        <td><div class="day-label">FRI</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);">Bootcamp</div></td>
-        <td>Peloton + Ropes</td><td><span class="badge badge-orange">60–70 min</span></td>
+        <td><div class="day-label" style="color:var(--orange2);">FRI</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);">Bootcamp</div></td>
+        <td>Peloton + Battle Ropes</td><td><span class="badge badge-orange">60–70 min</span></td>
         <td style="font-family:var(--font-mono);font-size:12px;color:var(--teal);">Follow prog</td>
         <td style="font-family:var(--font-mono);font-size:12px;color:var(--fg2);">Add ropes</td>
         <td style="font-family:var(--font-mono);font-size:12px;color:var(--orange2);">Max output</td>
-        <td><div style="color:var(--green);font-size:13px;">🔥 Battle Ropes — 10×(30s all-out / 30s rest)</div></td>
+        <td style="color:var(--green);font-size:13px;">🔥 Battle Ropes — 10×(30s all-out / 30s rest)</td>
       </tr>
       <tr>
-        <td><div class="day-label">SAT</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);">Long Run</div></td>
+        <td><div class="day-label" style="color:var(--orange2);">SAT</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);">Long Run</div></td>
         <td>Aerobic Base</td><td><span class="badge badge-orange">40–60 min</span></td>
         <td style="font-family:var(--font-mono);font-size:12px;color:var(--teal);">3.0 mi</td>
         <td style="font-family:var(--font-mono);font-size:12px;color:var(--fg2);">3.5–4 mi</td>
         <td style="font-family:var(--font-mono);font-size:12px;color:var(--orange2);">4.5–5 mi</td>
-        <td><div style="color:var(--fg3);font-size:13px;">Conversational pace. +0.5 mi every 2 weeks</div></td>
+        <td style="color:var(--fg3);font-size:13px;">Conversational pace. +0.5 mi every 2 weeks</td>
       </tr>
       <tr>
-        <td><div class="day-label">SUN</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);">Recovery</div></td>
-        <td>Active Rest</td><td><span class="badge badge-gray">Optional</span></td>
-        <td colspan="3" style="color:var(--fg3);font-size:13px;">Walk · Mobility · Foam Roll · Sleep 7.5–8.5 hrs</td>
-        <td></td>
+        <td><div class="day-label" style="color:var(--purple2);">SUN</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);">Yoga</div></td>
+        <td>Yoga — Sculpt or Flow</td><td><span class="badge badge-purple">45 min</span></td>
+        <td colspan="3" style="color:var(--fg3);font-size:13px;">Sculpt (strength) or Flow (mobility) — your choice each week</td>
+        <td style="color:var(--purple2);font-size:13px;">🧘 Active recovery · Breathwork</td>
       </tr>
       <tr class="bonus-row">
         <td colspan="7" style="font-size:13px;padding:14px 16px;">
@@ -987,282 +435,274 @@
     </tbody>
   </table>
 
-  <!-- HR Zones -->
-  <div class="section-header" style="margin-top:48px;">
-    <h2>HEART RATE <span class="accent">ZONES</span></h2>
-    <span class="tag">Est. max HR 178 bpm · Age 42</span>
-  </div>
-  <table class="zone-table" style="max-width:600px;">
+  <div class="section-header" style="margin-top:48px;"><h2>HEART RATE <span class="accent">ZONES</span></h2><span class="tag">Est. max HR 178 bpm · Age 42</span></div>
+  <table class="zone-table" style="max-width:580px;">
     <tbody>
-      <tr class="z1"><td class="z-name">Z1</td><td class="z-bpm" style="font-family:var(--font-mono);">89–107 bpm</td><td style="font-size:13px;color:var(--fg2);">Warmup / Recovery</td><td class="z-bar-wrap"><div class="z-bar"></div></td></tr>
-      <tr class="z2"><td class="z-name">Z2</td><td class="z-bpm" style="font-family:var(--font-mono);">107–125 bpm</td><td style="font-size:13px;color:var(--fg2);">Fat Burn / Base (Walks)</td><td class="z-bar-wrap"><div class="z-bar"></div></td></tr>
-      <tr class="z3"><td class="z-name">Z3</td><td class="z-bpm" style="font-family:var(--font-mono);">125–142 bpm</td><td style="font-size:13px;color:var(--fg2);">Tempo / Steady State</td><td class="z-bar-wrap"><div class="z-bar"></div></td></tr>
-      <tr class="z4"><td class="z-name">Z4</td><td class="z-bpm" style="font-family:var(--font-mono);">142–160 bpm</td><td style="font-size:13px;color:var(--fg2);">Threshold / Intervals</td><td class="z-bar-wrap"><div class="z-bar"></div></td></tr>
-      <tr class="z5"><td class="z-name">Z5</td><td class="z-bpm" style="font-family:var(--font-mono);">160–178 bpm</td><td style="font-size:13px;color:var(--fg2);">VO2 Max / Sprints</td><td class="z-bar-wrap"><div class="z-bar"></div></td></tr>
+      <tr class="z1"><td class="z-name">Z1</td><td class="z-bpm">89–107 bpm</td><td style="font-size:13px;color:var(--fg2);">Warmup / Recovery</td><td style="padding:10px 16px;"><div class="z-bar"></div></td></tr>
+      <tr class="z2"><td class="z-name">Z2</td><td class="z-bpm">107–125 bpm</td><td style="font-size:13px;color:var(--fg2);">Fat Burn / Base</td><td style="padding:10px 16px;"><div class="z-bar"></div></td></tr>
+      <tr class="z3"><td class="z-name">Z3</td><td class="z-bpm">125–142 bpm</td><td style="font-size:13px;color:var(--fg2);">Tempo / Steady State</td><td style="padding:10px 16px;"><div class="z-bar"></div></td></tr>
+      <tr class="z4"><td class="z-name">Z4</td><td class="z-bpm">142–160 bpm</td><td style="font-size:13px;color:var(--fg2);">Threshold / Intervals</td><td style="padding:10px 16px;"><div class="z-bar"></div></td></tr>
+      <tr class="z5"><td class="z-name">Z5</td><td class="z-bpm">160–178 bpm</td><td style="font-size:13px;color:var(--fg2);">VO2 Max / Sprints</td><td style="padding:10px 16px;"><div class="z-bar"></div></td></tr>
     </tbody>
   </table>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════ MONDAY -->
+<!-- ══════════════════════════════════════════ MONDAY -->
 <div id="monday" class="section">
-  <button class="back-btn" onclick="showSection('overview')">Back to Overview</button>
+  <button class="back-btn" onclick="showSection('overview','','')">Back to Overview</button>
   <div class="workout-banner">
     <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--teal);margin-bottom:12px;">MONDAY</div>
     <h2>Lower Body Strength 🦵</h2>
     <div class="sub">Squat Rack · Dumbbells · Treadmill Finisher &nbsp;|&nbsp; Est. 70–80 min total</div>
-    <div class="phase-pills">
-      <span class="phase-pill ph1">Wks 1–4 · 3×12 Moderate</span>
-      <span class="phase-pill ph2">Wks 5–8 · 4×8 Heavy</span>
-      <span class="phase-pill ph3">Wks 9–12 · 5×5 Peak</span>
-    </div>
+    <div class="phase-pills"><span class="phase-pill ph1">Wks 1–4 · 3×12 Moderate</span><span class="phase-pill ph2">Wks 5–8 · 4×8 Heavy</span><span class="phase-pill ph3">Wks 9–12 · 5×5 Peak</span></div>
   </div>
-
   <div class="block-label">Strength Block <span class="tag">45–50 min</span><div class="line"></div></div>
-  <table class="ex-table" id="mon-table">
-    <thead>
-      <tr>
-        <th style="width:40px">#</th>
-        <th>Exercise</th>
-        <th class="center">Sets</th>
-        <th class="center">Reps</th>
-        <th class="center">Tempo</th>
-        <th class="center">Rest</th>
-        <th>Weight / Notes</th>
-      </tr>
-    </thead>
-    <tbody id="mon-body"></tbody>
-  </table>
-
-  <div class="block-label" style="color:var(--green);">🏃 Cardio Finisher <span class="tag" style="color:var(--green);">Treadmill Run Intervals · 20–26 min</span><div class="line"></div></div>
+  <table class="ex-table"><thead><tr><th style="width:40px">#</th><th>Exercise</th><th class="center">Sets</th><th class="center">Reps</th><th class="center">Tempo</th><th class="center">Rest</th><th>Weight / Notes</th></tr></thead><tbody id="mon-body"></tbody></table>
+  <div class="block-label green-label" style="margin-top:36px;">🏃 Cardio Finisher <span class="tag">Treadmill · 20–26 min</span><div class="line"></div></div>
   <div class="cardio-grid" id="mon-cardio"></div>
-
-  <div style="margin-top:24px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:6px;border-left:3px solid var(--green);">
-    <p style="font-size:13px;color:var(--fg2);">
-      <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--green);text-transform:uppercase;">Phase Progression</span><br>
-      Phase 2: increase run speed by 0.3–0.5 mph per interval. &nbsp;·&nbsp; Phase 3: add a 9th round.
-    </p>
-    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;">
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">FASTEST INTERVAL PACE</label><input class="log-input" style="width:160px" placeholder="e.g. 8.5 mph" id="mon-pace"></div>
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">AVG HEART RATE</label><input class="log-input" style="width:130px" placeholder="e.g. 152 bpm" id="mon-hr"></div>
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">FELT (1–10)</label><input class="log-input" style="width:100px" placeholder="8" id="mon-felt"></div>
+  <div class="session-log green-log">
+    <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--green);text-transform:uppercase;margin-bottom:4px;">Session Log</div>
+    <div class="log-fields">
+      <div class="log-field"><label>Fastest Interval Pace</label><input class="log-input" style="width:150px" placeholder="e.g. 8.5 mph" id="mon-pace"></div>
+      <div class="log-field"><label>Avg Heart Rate</label><input class="log-input" style="width:130px" placeholder="e.g. 152 bpm" id="mon-hr"></div>
+      <div class="log-field"><label>Felt (1–10)</label><input class="log-input" style="width:90px" id="mon-felt"></div>
     </div>
   </div>
-  <div class="btn-row" style="margin-top:16px;"><button class="btn btn-primary" onclick="saveDay('mon')">Save Session</button><span class="save-msg" id="mon-msg">✓ Saved</span></div>
+  <div class="btn-row"><button class="btn btn-primary" onclick="saveDay('mon')">Save Session</button><span class="save-msg" id="mon-msg">✓ Saved</span></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════ TUESDAY -->
+<!-- ══════════════════════════════════════════ TUESDAY -->
 <div id="tuesday" class="section">
-  <button class="back-btn" onclick="showSection('overview')">Back to Overview</button>
+  <button class="back-btn" onclick="showSection('overview','','')">Back to Overview</button>
   <div class="workout-banner">
     <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--teal);margin-bottom:12px;">TUESDAY</div>
     <h2>Upper Body Strength 💪</h2>
     <div class="sub">Barbell · Dumbbells · Pull-Up Bar · Peloton Finisher &nbsp;|&nbsp; Est. 70–80 min total</div>
-    <div class="phase-pills">
-      <span class="phase-pill ph1">Wks 1–4 · 3×12 Moderate</span>
-      <span class="phase-pill ph2">Wks 5–8 · 4×8 Heavy</span>
-      <span class="phase-pill ph3">Wks 9–12 · 5×5 Peak</span>
-    </div>
+    <div class="phase-pills"><span class="phase-pill ph1">Wks 1–4 · 3×12 Moderate</span><span class="phase-pill ph2">Wks 5–8 · 4×8 Heavy</span><span class="phase-pill ph3">Wks 9–12 · 5×5 Peak</span></div>
   </div>
   <div class="block-label">Strength Block <span class="tag">45–50 min</span><div class="line"></div></div>
   <table class="ex-table"><thead><tr><th style="width:40px">#</th><th>Exercise</th><th class="center">Sets</th><th class="center">Reps</th><th class="center">Tempo</th><th class="center">Rest</th><th>Weight / Notes</th></tr></thead><tbody id="tue-body"></tbody></table>
-  <div class="block-label" style="color:var(--green);">🚴 Cardio Finisher <span class="tag" style="color:var(--green);">Peloton Bike Intervals · 28 min</span><div class="line"></div></div>
+  <div class="block-label green-label" style="margin-top:36px;">🚴 Cardio Finisher <span class="tag">Peloton Bike · 28 min</span><div class="line"></div></div>
   <div class="cardio-grid" id="tue-cardio"></div>
-  <div style="margin-top:24px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:6px;border-left:3px solid var(--green);">
-    <p style="font-size:13px;color:var(--fg2);"><span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--green);text-transform:uppercase;">Pull-Up Goal</span><br>+1 rep per week. Once you hit 12+ reps, add a weight vest or hold a dumbbell between your feet.</p>
-    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;">
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">OUTPUT AT TOP RESISTANCE</label><input class="log-input" style="width:160px" placeholder="e.g. 245 watts" id="tue-output"></div>
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">AVG HEART RATE</label><input class="log-input" style="width:130px" placeholder="e.g. 148 bpm" id="tue-hr"></div>
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">FELT (1–10)</label><input class="log-input" style="width:100px" placeholder="8" id="tue-felt"></div>
+  <div class="session-log teal-log">
+    <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--teal);text-transform:uppercase;margin-bottom:4px;">Session Log</div>
+    <div class="log-fields">
+      <div class="log-field"><label>Output at Top Resistance</label><input class="log-input" style="width:160px" placeholder="e.g. 245 watts" id="tue-output"></div>
+      <div class="log-field"><label>Pull-Up Reps</label><input class="log-input" style="width:110px" placeholder="e.g. 9" id="tue-pullups"></div>
+      <div class="log-field"><label>Avg Heart Rate</label><input class="log-input" style="width:130px" placeholder="bpm" id="tue-hr"></div>
+      <div class="log-field"><label>Felt (1–10)</label><input class="log-input" style="width:90px" id="tue-felt"></div>
     </div>
   </div>
-  <div class="btn-row" style="margin-top:16px;"><button class="btn btn-primary" onclick="saveDay('tue')">Save Session</button><span class="save-msg" id="tue-msg">✓ Saved</span></div>
+  <div class="btn-row"><button class="btn btn-primary" onclick="saveDay('tue')">Save Session</button><span class="save-msg" id="tue-msg">✓ Saved</span></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════ WEDNESDAY -->
+<!-- ══════════════════════════════════════════ WEDNESDAY — FULL BODY -->
 <div id="wednesday" class="section">
-  <button class="back-btn" onclick="showSection('overview')">Back to Overview</button>
+  <button class="back-btn" onclick="showSection('overview','','')">Back to Overview</button>
   <div class="workout-banner orange">
     <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--orange2);margin-bottom:12px;">WEDNESDAY</div>
-    <h2 style="color:var(--fg);">Push / Pull Hypertrophy 🔄</h2>
-    <div class="sub">Dumbbells · Pull-Up Bar · Rower Finisher &nbsp;|&nbsp; Est. 70–80 min total</div>
-    <div class="phase-pills">
-      <span class="phase-pill ph1">Wks 1–4 · 3×12 Controlled Tempo</span>
-      <span class="phase-pill ph2">Wks 5–8 · 4×10 Slow Negatives</span>
-      <span class="phase-pill ph3">Wks 9–12 · 4×12 Drop Sets</span>
-    </div>
+    <h2>Full Body Hypertrophy 🔄</h2>
+    <div class="sub">Dumbbells · Pull-Up Bar · Rower Finisher &nbsp;|&nbsp; Est. 75–85 min total</div>
+    <div class="phase-pills"><span class="phase-pill ph1">Wks 1–4 · 3×12 Controlled Tempo</span><span class="phase-pill ph2">Wks 5–8 · 4×10 Slow Negatives</span><span class="phase-pill ph3">Wks 9–12 · 4×12 Drop Sets on Last Set</span></div>
   </div>
-  <div class="block-label" style="color:var(--orange2);">Strength Block <span class="tag" style="color:var(--orange2);">45–50 min · Controlled tempo: 3 sec down, 1 sec up</span><div class="line"></div></div>
-  <table class="ex-table"><thead><tr><th style="width:40px">#</th><th>Exercise</th><th class="center">Sets</th><th class="center">Reps</th><th class="center">Tempo</th><th class="center">Rest</th><th>Weight / Notes</th></tr></thead><tbody id="wed-body"></tbody></table>
-  <div class="block-label" style="color:var(--green);">🚣 Cardio Finisher <span class="tag" style="color:var(--green);">Rower Intervals · 24 min</span><div class="line"></div></div>
+  <div style="padding:12px 16px;background:rgba(240,93,35,.08);border:1px solid rgba(240,93,35,.2);border-radius:6px;margin-bottom:24px;font-size:13px;color:var(--fg2);">
+    <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--orange2);text-transform:uppercase;">Structure</span>&nbsp;·&nbsp;
+    Upper push → Upper pull → Lower push → Lower pull → Core. Alternating upper/lower keeps intensity high while each muscle group recovers between sets. All reps at controlled tempo: 3 sec down, 1 sec up.
+  </div>
+
+  <div class="block-label orange-label">Upper Push <span class="tag">Chest · Shoulders · Triceps</span><div class="line"></div></div>
+  <table class="ex-table"><thead><tr><th style="width:40px">#</th><th>Exercise</th><th class="center">Sets</th><th class="center">Reps</th><th class="center">Tempo</th><th class="center">Rest</th><th>Weight / Notes</th></tr></thead><tbody id="wed-push"></tbody></table>
+
+  <div class="block-label orange-label" style="margin-top:32px;">Upper Pull <span class="tag">Back · Biceps · Rear Delts</span><div class="line"></div></div>
+  <table class="ex-table"><thead><tr><th style="width:40px">#</th><th>Exercise</th><th class="center">Sets</th><th class="center">Reps</th><th class="center">Tempo</th><th class="center">Rest</th><th>Weight / Notes</th></tr></thead><tbody id="wed-pull"></tbody></table>
+
+  <div class="block-label orange-label" style="margin-top:32px;">Lower Body <span class="tag">Quads · Hamstrings · Glutes</span><div class="line"></div></div>
+  <table class="ex-table"><thead><tr><th style="width:40px">#</th><th>Exercise</th><th class="center">Sets</th><th class="center">Reps</th><th class="center">Tempo</th><th class="center">Rest</th><th>Weight / Notes</th></tr></thead><tbody id="wed-lower"></tbody></table>
+
+  <div class="block-label orange-label" style="margin-top:32px;">Core Finisher <span class="tag">3–4 min · no rest between</span><div class="line"></div></div>
+  <table class="ex-table"><thead><tr><th style="width:40px">#</th><th>Exercise</th><th class="center">Sets</th><th class="center">Reps</th><th class="center">Tempo</th><th class="center">Rest</th><th>Weight / Notes</th></tr></thead><tbody id="wed-core"></tbody></table>
+
+  <div class="block-label green-label" style="margin-top:36px;">🚣 Cardio Finisher <span class="tag">Rower · 24 min</span><div class="line"></div></div>
   <div class="cardio-grid" id="wed-cardio"></div>
-  <div style="margin-top:24px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:6px;border-left:3px solid var(--green);">
-    <p style="font-size:13px;color:var(--fg2);"><span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--green);text-transform:uppercase;">500m Split Target</span><br>Phase 2 goal: sub-2:00/500m &nbsp;·&nbsp; Phase 3 goal: hold sub-1:55 for all 6 rounds</p>
-    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;">
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">BEST 500m SPLIT</label><input class="log-input orange" style="width:160px" placeholder="e.g. 1:58" id="wed-split"></div>
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">AVG HEART RATE</label><input class="log-input orange" style="width:130px" placeholder="e.g. 155 bpm" id="wed-hr"></div>
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">FELT (1–10)</label><input class="log-input orange" style="width:100px" placeholder="8" id="wed-felt"></div>
+  <div class="session-log orange-log">
+    <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--orange2);text-transform:uppercase;margin-bottom:4px;">Session Log</div>
+    <div class="log-fields">
+      <div class="log-field"><label>Best 500m Split</label><input class="log-input orange" style="width:140px" placeholder="e.g. 1:58" id="wed-split"></div>
+      <div class="log-field"><label>Avg Heart Rate</label><input class="log-input orange" style="width:130px" placeholder="bpm" id="wed-hr"></div>
+      <div class="log-field"><label>Felt (1–10)</label><input class="log-input orange" style="width:90px" id="wed-felt"></div>
     </div>
   </div>
-  <div class="btn-row" style="margin-top:16px;"><button class="btn btn-primary" onclick="saveDay('wed')">Save Session</button><span class="save-msg" id="wed-msg">✓ Saved</span></div>
+  <div class="btn-row"><button class="btn btn-primary orange-btn" onclick="saveDay('wed')">Save Session</button><span class="save-msg" id="wed-msg">✓ Saved</span></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════ THURSDAY -->
+<!-- ══════════════════════════════════════════ THURSDAY — HEAVY LEGS -->
 <div id="thursday" class="section">
-  <button class="back-btn" onclick="showSection('overview')">Back to Overview</button>
-  <div class="workout-banner">
-    <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--teal);margin-bottom:12px;">THURSDAY</div>
-    <h2>Cardio Endurance Day 🏃</h2>
-    <div class="sub">Treadmill · Peloton · Rower — rotate weekly &nbsp;|&nbsp; Est. 50–60 min</div>
-    <div class="phase-pills">
-      <span class="phase-pill ph1">Wks 1–4 · 1 interval session/wk · Z2–Z3 base</span>
-      <span class="phase-pill ph2">Wks 5–8 · 2 interval sessions · build speed</span>
-      <span class="phase-pill ph3">Wks 9–12 · 2–3 rounds · max VO2 effort</span>
+  <button class="back-btn" onclick="showSection('overview','','')">Back to Overview</button>
+  <div class="workout-banner orange">
+    <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--orange2);margin-bottom:12px;">THURSDAY</div>
+    <h2>Heavy Leg Day 🏋️</h2>
+    <div class="sub">Squat Rack · Barbell · Dumbbells &nbsp;|&nbsp; Est. 60–70 min · No Cardio Finisher</div>
+    <div class="phase-pills"><span class="phase-pill ph1">Wks 1–4 · 4×5 Heavy — learn the patterns</span><span class="phase-pill ph2">Wks 5–8 · 5×3 Heavier — push load</span><span class="phase-pill ph3">Wks 9–12 · 5×3 + AMRAP last set</span></div>
+  </div>
+  <div style="padding:12px 16px;background:rgba(240,93,35,.08);border:1px solid rgba(240,93,35,.2);border-radius:6px;margin-bottom:24px;font-size:13px;color:var(--fg2);">
+    <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--orange2);text-transform:uppercase;">Intent</span>&nbsp;·&nbsp;
+    This is your maximum strength day. Reps are low, weight is heavy, rest is full. Do not rush. Add 5–10 lbs to the deadlift and 5 lbs to the front squat each week you hit all reps cleanly. No cardio finisher — let your CNS recover.
+  </div>
+  <div class="block-label orange-label">Heavy Compound Lifts <span class="tag">60–65 min · Full rest between sets</span><div class="line"></div></div>
+  <table class="ex-table"><thead><tr><th style="width:40px">#</th><th>Exercise</th><th class="center">Sets</th><th class="center">Reps</th><th class="center">Tempo</th><th class="center">Rest</th><th>Weight / Notes</th></tr></thead><tbody id="thu-body"></tbody></table>
+  <div class="session-log orange-log" style="margin-top:32px;">
+    <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--orange2);text-transform:uppercase;margin-bottom:4px;">Session Log</div>
+    <div class="log-fields">
+      <div class="log-field"><label>Deadlift Top Set (lbs)</label><input class="log-input orange" style="width:150px" placeholder="e.g. 275" id="thu-dl"></div>
+      <div class="log-field"><label>Front Squat Top Set (lbs)</label><input class="log-input orange" style="width:160px" placeholder="e.g. 185" id="thu-sq"></div>
+      <div class="log-field"><label>Split Squat Load (lbs)</label><input class="log-input orange" style="width:150px" placeholder="e.g. 50 ea." id="thu-split"></div>
+      <div class="log-field"><label>Felt (1–10)</label><input class="log-input orange" style="width:90px" id="thu-felt"></div>
     </div>
   </div>
-
-  <div class="block-label">Option A — Treadmill <span class="tag">Rotate weekly</span><div class="line"></div></div>
-  <div class="cardio-grid" id="thu-cardio-a"></div>
-
-  <div class="block-label" style="margin-top:32px;">Option B — Peloton <span class="tag">Pyramid Intervals</span><div class="line"></div></div>
-  <div class="cardio-grid" id="thu-cardio-b"></div>
-
-  <div class="block-label" style="margin-top:32px;">Option C — Rower <span class="tag">2000m Benchmark + Steady</span><div class="line"></div></div>
-  <div class="cardio-grid" id="thu-cardio-c"></div>
-
-  <div style="margin-top:24px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:6px;border-left:3px solid var(--teal);">
-    <div style="display:flex;gap:16px;flex-wrap:wrap;">
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">THIS WEEK'S MACHINE</label><input class="log-input" style="width:160px" placeholder="Run / Bike / Row" id="thu-machine"></div>
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">TOTAL DISTANCE / OUTPUT</label><input class="log-input" style="width:160px" placeholder="e.g. 4.2 mi" id="thu-output"></div>
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">AVG HR</label><input class="log-input" style="width:120px" placeholder="bpm" id="thu-hr"></div>
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">FELT (1–10)</label><input class="log-input" style="width:100px" id="thu-felt"></div>
-    </div>
-  </div>
-  <div class="btn-row" style="margin-top:16px;"><button class="btn btn-primary" onclick="saveDay('thu')">Save Session</button><span class="save-msg" id="thu-msg">✓ Saved</span></div>
+  <div class="btn-row"><button class="btn btn-primary orange-btn" onclick="saveDay('thu')">Save Session</button><span class="save-msg" id="thu-msg">✓ Saved</span></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════ FRIDAY -->
+<!-- ══════════════════════════════════════════ FRIDAY -->
 <div id="friday" class="section">
-  <button class="back-btn" onclick="showSection('overview')">Back to Overview</button>
+  <button class="back-btn" onclick="showSection('overview','','')">Back to Overview</button>
   <div class="workout-banner orange">
     <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--orange2);margin-bottom:12px;">FRIDAY</div>
     <h2>Peloton Bootcamp + Battle Ropes 🚴🔥</h2>
     <div class="sub">Peloton · Treadmill · Battle Ropes &nbsp;|&nbsp; Est. 60–70 min total</div>
-    <div class="phase-pills">
-      <span class="phase-pill ph1">Wks 1–4 · Follow instructor pacing</span>
-      <span class="phase-pill ph2">Wks 5–8 · Add battle ropes finisher</span>
-      <span class="phase-pill ph3">Wks 9–12 · Max effort — track output every block</span>
-    </div>
+    <div class="phase-pills"><span class="phase-pill ph1">Wks 1–4 · Follow instructor pacing</span><span class="phase-pill ph2">Wks 5–8 · Add battle ropes finisher</span><span class="phase-pill ph3">Wks 9–12 · Max effort — track output every block</span></div>
   </div>
-
-  <div class="block-label" style="color:var(--orange2);">Peloton Bootcamp <span class="tag" style="color:var(--orange2);">45 min</span><div class="line"></div></div>
+  <div class="block-label orange-label">Peloton Bootcamp <span class="tag">45 min</span><div class="line"></div></div>
   <div class="cardio-grid" id="fri-bootcamp"></div>
-
-  <div class="block-label" style="margin-top:32px;color:var(--green);">🔥 Battle Ropes Finisher <span class="tag" style="color:var(--green);">12–15 min</span><div class="line"></div></div>
+  <div class="block-label green-label" style="margin-top:32px;">🔥 Battle Ropes Finisher <span class="tag">12–15 min</span><div class="line"></div></div>
   <div class="cardio-grid" id="fri-ropes"></div>
-
-  <div style="margin-top:24px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:6px;border-left:3px solid var(--orange);">
-    <div style="display:flex;gap:16px;flex-wrap:wrap;">
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">BOOTCAMP CLASS</label><input class="log-input orange" style="width:200px" placeholder="Class name" id="fri-class"></div>
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">BEST RUN OUTPUT</label><input class="log-input orange" style="width:140px" placeholder="e.g. 8.5 mph" id="fri-output"></div>
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">ROPES ROUNDS</label><input class="log-input orange" style="width:120px" placeholder="10" id="fri-rounds"></div>
-      <div><label style="font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:.12em;display:block;margin-bottom:4px;">FELT (1–10)</label><input class="log-input orange" style="width:100px" id="fri-felt"></div>
+  <div class="session-log orange-log">
+    <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--orange2);text-transform:uppercase;margin-bottom:4px;">Session Log</div>
+    <div class="log-fields">
+      <div class="log-field"><label>Bootcamp Class</label><input class="log-input orange" style="width:200px" placeholder="Class name" id="fri-class"></div>
+      <div class="log-field"><label>Best Run Output</label><input class="log-input orange" style="width:140px" placeholder="e.g. 8.5 mph" id="fri-output"></div>
+      <div class="log-field"><label>Ropes Rounds</label><input class="log-input orange" style="width:110px" placeholder="10" id="fri-rounds"></div>
+      <div class="log-field"><label>Felt (1–10)</label><input class="log-input orange" style="width:90px" id="fri-felt"></div>
     </div>
   </div>
-  <div class="btn-row" style="margin-top:16px;"><button class="btn btn-primary" onclick="saveDay('fri')">Save Session</button><span class="save-msg" id="fri-msg">✓ Saved</span></div>
+  <div class="btn-row"><button class="btn btn-primary orange-btn" onclick="saveDay('fri')">Save Session</button><span class="save-msg" id="fri-msg">✓ Saved</span></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════ SATURDAY -->
+<!-- ══════════════════════════════════════════ SATURDAY -->
 <div id="saturday" class="section">
-  <button class="back-btn" onclick="showSection('overview')">Back to Overview</button>
+  <button class="back-btn" onclick="showSection('overview','','')">Back to Overview</button>
   <div class="workout-banner orange">
     <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--orange2);margin-bottom:12px;">SATURDAY</div>
     <h2>Long Run 🏅</h2>
     <div class="sub">Treadmill or Outdoor &nbsp;|&nbsp; Est. 40–60 min</div>
-    <div class="phase-pills">
-      <span class="phase-pill ph1">Wks 1–4 · 3.0 miles — Build your base</span>
-      <span class="phase-pill ph2">Wks 5–8 · 3.5–4.0 miles — +0.5 mi every 2 wks</span>
-      <span class="phase-pill ph3">Wks 9–12 · 4.5–5.0 miles — Track pace every mile</span>
-    </div>
+    <div class="phase-pills"><span class="phase-pill ph1">Wks 1–4 · 3.0 miles</span><span class="phase-pill ph2">Wks 5–8 · 3.5–4.0 miles</span><span class="phase-pill ph3">Wks 9–12 · 4.5–5.0 miles</span></div>
   </div>
-
-  <div class="block-label" style="color:var(--orange2);">Run Structure <span class="tag" style="color:var(--orange2);">Stay conversational throughout</span><div class="line"></div></div>
+  <div class="block-label orange-label">Run Structure <span class="tag">Stay conversational throughout</span><div class="line"></div></div>
   <div class="cardio-grid" id="sat-run"></div>
-
-  <div class="block-label" style="margin-top:32px;">12-Week Running Log <span class="tag">Every Saturday</span><div class="line"></div></div>
+  <div class="block-label" style="margin-top:36px;">12-Week Running Log <span class="tag">Every Saturday</span><div class="line"></div></div>
   <div style="overflow-x:auto;">
     <table class="run-log">
-      <thead><tr>
-        <th>Week</th><th>Date</th><th>Distance</th><th>Time</th><th>Avg Pace</th><th>Avg HR</th><th>Notes</th>
-      </tr></thead>
+      <thead><tr><th>Week</th><th>Date</th><th>Distance</th><th>Time</th><th>Avg Pace</th><th>Avg HR</th><th>Notes</th></tr></thead>
       <tbody id="run-log-body"></tbody>
     </table>
   </div>
-  <div class="btn-row" style="margin-top:16px;"><button class="btn btn-primary" onclick="saveRunLog()">Save Log</button><span class="save-msg" id="sat-msg">✓ Saved</span></div>
+  <div class="btn-row"><button class="btn btn-primary orange-btn" onclick="saveRunLog()">Save Log</button><span class="save-msg" id="sat-msg">✓ Saved</span></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════ PROGRESS -->
-<div id="progress" class="section">
-  <div class="section-header">
-    <h2>PROGRESS <span class="accent">TRACKER</span></h2>
-    <span class="tag">Measure every 4 weeks · same time, same conditions</span>
+<!-- ══════════════════════════════════════════ SUNDAY — YOGA -->
+<div id="sunday" class="section">
+  <button class="back-btn" onclick="showSection('overview','','')">Back to Overview</button>
+  <div class="workout-banner purple">
+    <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--purple2);margin-bottom:12px;">SUNDAY</div>
+    <h2 style="color:var(--fg);">Yoga — 45 Minutes 🧘</h2>
+    <div class="sub">Sculpt or Flow — your choice each week &nbsp;|&nbsp; Full active recovery</div>
+    <div class="phase-pills">
+      <span class="phase-pill" style="background:rgba(155,89,182,.2);color:var(--purple2);border:1px solid rgba(155,89,182,.4);">Sculpt — Strength-based flows</span>
+      <span class="phase-pill ph2">Flow — Mobility & Recovery</span>
+    </div>
   </div>
 
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px;">
+    <!-- Sculpt -->
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+      <div style="background:linear-gradient(135deg,rgba(155,89,182,.3),rgba(155,89,182,.05));padding:20px 24px;border-bottom:1px solid var(--border);">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--purple2);text-transform:uppercase;margin-bottom:6px;">Option A</div>
+        <div style="font-family:var(--font-display);font-size:30px;letter-spacing:.04em;color:var(--fg);">Yoga Sculpt</div>
+        <div style="font-size:13px;color:var(--fg2);margin-top:6px;">Strength-based flows with holds. Builds muscle endurance while improving flexibility. Higher effort — treat it like a workout.</div>
+      </div>
+      <div style="padding:20px 24px;">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--fg3);text-transform:uppercase;margin-bottom:12px;">Sample 45-min Structure</div>
+        <div class="yoga-grid" id="sculpt-grid"></div>
+      </div>
+    </div>
+    <!-- Flow -->
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+      <div style="background:linear-gradient(135deg,rgba(14,158,155,.2),rgba(14,158,155,.03));padding:20px 24px;border-bottom:1px solid var(--border);">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--teal2);text-transform:uppercase;margin-bottom:6px;">Option B</div>
+        <div style="font-family:var(--font-display);font-size:30px;letter-spacing:.04em;color:var(--fg);">Yoga Flow</div>
+        <div style="font-size:13px;color:var(--fg2);margin-top:6px;">Vinyasa-style movement linked to breath. Lower intensity — ideal after a big training week. Prioritizes hip flexors, thoracic spine, and hamstrings.</div>
+      </div>
+      <div style="padding:20px 24px;">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--fg3);text-transform:uppercase;margin-bottom:12px;">Sample 45-min Structure</div>
+        <div class="yoga-grid" id="flow-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Weekly focus -->
+  <div class="block-label purple-label">Weekly Selection Guide <span class="tag">How to choose each Sunday</span><div class="line"></div></div>
+  <table class="plan-table" style="max-width:800px;">
+    <thead><tr><th>If this week was…</th><th>Choose</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Heavy on volume (many sets logged)</td><td><span class="badge badge-purple">Flow</span></td><td style="font-size:13px;color:var(--fg2);">Prioritize recovery — deep stretching and breathwork flush fatigue</td></tr>
+      <tr><td>Lighter week or a deload week</td><td><span class="badge badge-purple">Sculpt</span></td><td style="font-size:13px;color:var(--fg2);">Keep stimulus going — isometric holds and flows add volume safely</td></tr>
+      <tr><td>Soreness in hips/lower back</td><td><span class="badge badge-purple">Flow</span></td><td style="font-size:13px;color:var(--fg2);">Pigeon pose, figure-four, couch stretch — essential after heavy leg days</td></tr>
+      <tr><td>Feeling good, energy high</td><td><span class="badge badge-purple">Sculpt</span></td><td style="font-size:13px;color:var(--fg2);">Take advantage — chair pose holds and warrior sequences build leg endurance</td></tr>
+    </tbody>
+  </table>
+
+  <div class="session-log purple-log" style="margin-top:32px;">
+    <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--purple2);text-transform:uppercase;margin-bottom:4px;">Session Log</div>
+    <div class="log-fields">
+      <div class="log-field"><label>Style (Sculpt / Flow)</label><input class="log-input purple" style="width:160px" placeholder="Sculpt or Flow" id="sun-style"></div>
+      <div class="log-field"><label>Class / Instructor</label><input class="log-input purple" style="width:200px" placeholder="Optional" id="sun-class"></div>
+      <div class="log-field"><label>How Body Feels After</label><input class="log-input purple" style="width:220px" placeholder="e.g. Hips much looser" id="sun-feel"></div>
+      <div class="log-field"><label>Felt (1–10)</label><input class="log-input purple" style="width:90px" id="sun-felt"></div>
+    </div>
+  </div>
+  <div class="btn-row"><button class="btn btn-primary purple-btn" onclick="saveDay('sun')">Save Session</button><span class="save-msg" id="sun-msg">✓ Saved</span></div>
+</div>
+
+<!-- ══════════════════════════════════════════ PROGRESS -->
+<div id="progress" class="section">
+  <div class="section-header"><h2>PROGRESS <span class="accent">TRACKER</span></h2><span class="tag">Measure every 4 weeks · same time, same conditions</span></div>
   <div class="btn-row">
     <button class="btn btn-primary" onclick="saveProgress()">Save All Progress</button>
     <button class="btn btn-ghost" onclick="clearProgress()">Clear Data</button>
     <span class="save-msg" id="prog-msg">✓ Saved</span>
   </div>
-
   <div class="progress-grid" id="progress-grid"></div>
 
-  <!-- Targets -->
-  <div class="section-header" style="margin-top:16px;">
-    <h2>12-WEEK <span class="accent">TARGETS</span></h2>
-  </div>
+  <div class="section-header" style="margin-top:16px;"><h2>12-WEEK <span class="accent">TARGETS</span></h2></div>
   <table class="plan-table" style="max-width:700px;">
     <thead><tr><th>Metric</th><th>Starting</th><th>12-Week Target</th></tr></thead>
     <tbody>
-      <tr><td>Body Weight</td><td>220 lbs</td><td style="color:var(--teal);">205–212 lbs (lean recomp)</td></tr>
+      <tr><td>Body Weight</td><td>220 lbs</td><td style="color:var(--teal);">205–212 lbs</td></tr>
       <tr><td>Est. Body Fat</td><td>~20–22%</td><td style="color:var(--teal);">14–17%</td></tr>
       <tr><td>Back Squat 1RM</td><td>Log Week 1</td><td style="color:var(--teal);">+20–30 lbs</td></tr>
-      <tr><td>1-Mile Run Time</td><td>Log Week 1</td><td style="color:var(--teal);">-45 to 90 seconds</td></tr>
+      <tr><td>Deadlift 1RM</td><td>Log Week 1</td><td style="color:var(--teal);">+25–40 lbs</td></tr>
+      <tr><td>1-Mile Run Time</td><td>Log Week 1</td><td style="color:var(--teal);">-45 to 90 sec</td></tr>
       <tr><td>Pull-Ups (max)</td><td>Log Week 1</td><td style="color:var(--teal);">+4–6 reps</td></tr>
     </tbody>
   </table>
-
-  <div class="section-header" style="margin-top:40px;">
-    <h2>OVERLOAD <span class="accent">RULES</span></h2>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;max-width:900px;">
-    <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:6px;padding:16px;">
-      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--teal);text-transform:uppercase;margin-bottom:8px;">Compound Lifts</div>
-      <div style="font-size:13px;color:var(--fg2);line-height:1.5;">Add 5 lbs when you complete all reps in all sets for 2 consecutive sessions with good form.</div>
-    </div>
-    <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:6px;padding:16px;">
-      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--teal);text-transform:uppercase;margin-bottom:8px;">Pull-Ups</div>
-      <div style="font-size:13px;color:var(--fg2);line-height:1.5;">+1 rep per session target. Add weight vest or dumbbell once you hit 12+ reps consistently.</div>
-    </div>
-    <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--orange);border-radius:6px;padding:16px;">
-      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--orange2);text-transform:uppercase;margin-bottom:8px;">Long Run</div>
-      <div style="font-size:13px;color:var(--fg2);line-height:1.5;">Add 0.5 miles every 2 weeks. Keep effort conversational — if you can't speak, slow down.</div>
-    </div>
-    <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--orange);border-radius:6px;padding:16px;">
-      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--orange2);text-transform:uppercase;margin-bottom:8px;">Cardio Intensity</div>
-      <div style="font-size:13px;color:var(--fg2);line-height:1.5;">Increase speed or resistance by 5% every 3 weeks on interval sessions.</div>
-    </div>
-    <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--yellow);border-radius:6px;padding:16px;">
-      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--yellow);text-transform:uppercase;margin-bottom:8px;">Deload Weeks</div>
-      <div style="font-size:13px;color:var(--fg2);line-height:1.5;">Weeks 4, 8, and 12 — cut all volume by 50%. This is where the gains are cemented.</div>
-    </div>
-  </div>
 </div>
 
-</div><!-- end .main -->
+</div><!-- /.main -->
 
 <script>
-// ── DATA ─────────────────────────────────────────────────────────────────────
-const MON_EXERCISES = [
-  { name:"Barbell Back Squat", tip:"Depth to parallel or below. Knees track over toes. Brace core hard before every rep.", sets:"4", reps:"6–8", tempo:"3-1-1", rest:"2–3 min" },
+// ══════════════════════════════════════════════════════ DATA
+
+const MON_EX = [
+  { name:"Barbell Back Squat", tip:"Depth to parallel or below. Knees track over toes. Brace core before every rep.", sets:"4", reps:"6–8", tempo:"3-1-1", rest:"2–3 min" },
   { name:"Romanian Deadlift (Dumbbells)", tip:"Hinge at hips, soft knee bend. Feel the hamstring stretch. Neutral spine throughout.", sets:"3", reps:"10–12", tempo:"3-1-1", rest:"90 sec" },
   { name:"Bulgarian Split Squat", tip:"Rear foot elevated on bench. Drive through front heel. Keep torso upright.", sets:"3", reps:"10 ea.", tempo:"3-0-1", rest:"90 sec" },
   { name:"Goblet Squat (Dumbbell)", tip:"Hold DB at chest. Wide stance. Use for form reinforcement or burnout sets.", sets:"3", reps:"12–15", tempo:"2-1-2", rest:"60 sec" },
@@ -1273,59 +713,67 @@ const MON_EXERCISES = [
 
 const MON_CARDIO = [
   { block:"Warmup Jog", duration:"5 min", effort:"Easy", zone:"Z1–Z2", detail:"3.5–4.5 mph on treadmill. Shake out legs after lifting." },
-  { block:"Run Intervals ×8", duration:"16 min", effort:"Hard / Walk", zone:"Z4–Z5 / Z1", detail:"1 min at 7–9 mph (Z4–Z5) → 1 min walk recovery. Repeat 8 rounds." },
+  { block:"Run Intervals ×8", duration:"16 min", effort:"Hard / Walk", zone:"Z4–Z5 / Z1", detail:"1 min at 7–9 mph → 1 min walk recovery. Repeat 8 rounds." },
   { block:"Cooldown Walk", duration:"5 min", effort:"Easy", zone:"Z1", detail:"2.5–3.0 mph. Let HR drop below 110 bpm before stopping." },
 ];
 
-const TUE_EXERCISES = [
+const TUE_EX = [
   { name:"Barbell Bench Press", tip:"Feet flat, slight arch, bar to lower chest. Control the descent every rep.", sets:"4", reps:"6–8", tempo:"3-1-1", rest:"2–3 min" },
   { name:"Dumbbell Row (each side)", tip:"Brace on bench or knee. Pull elbow to hip. Full stretch at the bottom.", sets:"4", reps:"10–12", tempo:"2-1-2", rest:"90 sec" },
-  { name:"Dumbbell Overhead Press", tip:"Standing or seated. Core tight. Don't flare ribs. Full lockout at top.", sets:"3", reps:"8–10", tempo:"2-1-2", rest:"90 sec" },
+  { name:"Dumbbell Overhead Press", tip:"Standing. Core tight. Don't flare ribs. Full lockout at top.", sets:"3", reps:"8–10", tempo:"2-1-2", rest:"90 sec" },
   { name:"Pull-Ups / Weighted Pull-Ups", tip:"Dead hang start. Full ROM. Add weight vest or DB when 12+ reps feel easy.", sets:"3", reps:"Max / 6–8", tempo:"2-0-2", rest:"2 min" },
   { name:"Incline Dumbbell Press", tip:"30–45° incline. Controlled lowering. Focus on upper chest stretch at bottom.", sets:"3", reps:"10–12", tempo:"3-0-1", rest:"90 sec" },
   { name:"Band Pull-Apart", tip:"Arms straight throughout. Squeeze shoulder blades together. Great for rear delts.", sets:"3", reps:"15–20", tempo:"1-1-1", rest:"45 sec" },
-  { name:"Hammer Curl + Tricep Dip (superset)", tip:"DB hammer curl ×12 → immediately to bench dips or bar dips ×12.", sets:"3", reps:"12 + 12", tempo:"2-0-2", rest:"60 sec" },
+  { name:"Hammer Curl + Tricep Dip (superset)", tip:"DB hammer curl ×12 → immediately to bench dips or bar dips ×12. No rest between.", sets:"3", reps:"12 + 12", tempo:"2-0-2", rest:"60 sec" },
 ];
 
 const TUE_CARDIO = [
-  { block:"Warmup Spin", duration:"5 min", effort:"Easy", zone:"Z1–Z2", detail:"Low resistance, 80–90 rpm. Shake out upper body, loosen hips." },
+  { block:"Warmup Spin", duration:"5 min", effort:"Easy", zone:"Z1–Z2", detail:"Low resistance, 80–90 rpm. Loosen hips after upper body work." },
   { block:"Bike Intervals ×5", duration:"15 min", effort:"Hard / Easy", zone:"Z4–Z5 / Z2", detail:"2 min high resistance seated climb → 1 min easy spin. 5 rounds." },
-  { block:"Steady State", duration:"5 min", effort:"Moderate", zone:"Z3", detail:"Moderate resistance, maintain 75–80 rpm. Focus on breath control." },
-  { block:"Cooldown", duration:"3 min", effort:"Very easy", zone:"Z1", detail:"Very light resistance. Let HR drop, breathe through nose." },
+  { block:"Steady State", duration:"5 min", effort:"Moderate", zone:"Z3", detail:"Moderate resistance, 75–80 rpm. Focus on breath control." },
+  { block:"Cooldown", duration:"3 min", effort:"Very easy", zone:"Z1", detail:"Very light resistance. Let HR drop. Breathe through nose." },
 ];
 
-const WED_EXERCISES = [
-  { name:"Dumbbell Shoulder Press", tip:"Standing. Core braced. Full press overhead, lower to ear height each rep.", sets:"4", reps:"8–10", tempo:"2-1-2", rest:"90 sec" },
-  { name:"Dumbbell Lateral Raise", tip:"Slight forward lean. Lead with elbows, not wrists. No swinging at all.", sets:"3", reps:"12–15", tempo:"2-0-2", rest:"60 sec" },
+// Wednesday — split into sections
+const WED_PUSH = [
+  { name:"Dumbbell Shoulder Press", tip:"Standing. Core braced. Full press overhead, lower to ear height. Don't rush.", sets:"3–4", reps:"10–12", tempo:"2-1-2", rest:"60 sec" },
   { name:"Dumbbell Chest Fly", tip:"Flat bench. Slight elbow bend throughout. Stretch at bottom, squeeze at top.", sets:"3", reps:"12", tempo:"3-0-1", rest:"60 sec" },
-  { name:"Renegade Row", tip:"Plank on DBs. Row one arm, keep hips square. Alternate sides each rep.", sets:"3", reps:"8 ea.", tempo:"2-1-2", rest:"90 sec" },
-  { name:"Tricep Overhead Extension (DB)", tip:"One or two hands. Elbows point forward, lower behind head. Full stretch.", sets:"3", reps:"12–15", tempo:"2-1-2", rest:"60 sec" },
-  { name:"Dumbbell Bicep Curl", tip:"No swinging. Full supination at the top. Control the negative phase.", sets:"3", reps:"12–15", tempo:"2-0-2", rest:"60 sec" },
-  { name:"Ab Wheel Rollout (or Hollow Hold)", tip:"From knees. Only go as far as you can maintain a neutral spine.", sets:"3", reps:"10 / 30 sec", tempo:"Slow", rest:"60 sec" },
+  { name:"Dumbbell Lateral Raise", tip:"Slight forward lean. Lead with elbows, not wrists. No swinging at all.", sets:"3", reps:"12–15", tempo:"2-0-2", rest:"45 sec" },
+  { name:"Tricep Overhead Extension (DB)", tip:"Elbows point forward, lower behind head. Full stretch at the bottom.", sets:"3", reps:"12–15", tempo:"2-1-2", rest:"60 sec" },
+];
+
+const WED_PULL = [
+  { name:"Renegade Row", tip:"Plank on DBs. Row one arm at a time, keep hips absolutely square. Alternate sides.", sets:"3", reps:"8 ea.", tempo:"2-1-2", rest:"60 sec" },
+  { name:"Dumbbell Bicep Curl", tip:"No swinging. Full supination at the top. Slow, controlled negative.", sets:"3", reps:"12–15", tempo:"2-0-2", rest:"45 sec" },
+  { name:"Dumbbell Rear Delt Fly", tip:"Hinge forward 45°, arms hang. Raise out to sides, lead with elbows. Squeeze at top.", sets:"3", reps:"12–15", tempo:"2-0-2", rest:"45 sec" },
+];
+
+const WED_LOWER = [
+  { name:"Goblet Squat (Dumbbell)", tip:"Hold DB at chest. Wide stance. Focus on depth and knee tracking. Controlled descent.", sets:"3–4", reps:"12–15", tempo:"3-1-2", rest:"60 sec" },
+  { name:"Dumbbell Romanian Deadlift", tip:"Hinge at hips, push them back. Feel the hamstring load. Neutral spine throughout.", sets:"3", reps:"12", tempo:"3-1-1", rest:"60 sec" },
+  { name:"Reverse Lunge (Dumbbells)", tip:"Step back, lower rear knee toward floor. Front shin stays vertical. Drive up through front heel.", sets:"3", reps:"10 ea.", tempo:"2-0-1", rest:"60 sec" },
+  { name:"Single-Leg Calf Raise", tip:"Use a step for full range. Pause at peak contraction. Switch legs each set.", sets:"3", reps:"15 ea.", tempo:"2-1-2", rest:"45 sec" },
+];
+
+const WED_CORE = [
+  { name:"Ab Wheel Rollout", tip:"From knees. Only go as far as you can maintain a neutral spine. Quality over range.", sets:"3", reps:"10", tempo:"Slow", rest:"30 sec" },
+  { name:"Hollow Hold", tip:"Lower back pressed to floor. Arms overhead or crossed. Hold without losing contact.", sets:"3", reps:"30–45 sec", tempo:"Static", rest:"30 sec" },
 ];
 
 const WED_CARDIO = [
-  { block:"Warmup Row", duration:"3 min", effort:"Easy", zone:"Z1–Z2", detail:"Easy strokes, 20 s/m. Focus on leg drive → body swing → arm pull sequence." },
-  { block:"Row Intervals ×6", duration:"18 min", effort:"Hard / Rest", zone:"Z4–Z5 / Z1", detail:"500m hard effort → 2 min rest/easy paddle. Aim to hold consistent split times." },
-  { block:"Easy Paddle Out", duration:"3 min", effort:"Very easy", zone:"Z1", detail:"Light strokes to flush lactic acid. Track your best 500m split time." },
+  { block:"Warmup Row", duration:"3 min", effort:"Easy", zone:"Z1–Z2", detail:"Easy strokes, 20 s/m. Focus on leg drive → body swing → arm pull." },
+  { block:"Row Intervals ×6", duration:"18 min", effort:"Hard / Rest", zone:"Z4–Z5 / Z1", detail:"500m hard effort → 2 min rest/easy paddle. Track consistent split times." },
+  { block:"Easy Paddle Out", duration:"3 min", effort:"Very easy", zone:"Z1", detail:"Light strokes to flush lactic acid. Log your best 500m split." },
 ];
 
-const THU_A = [
-  { block:"Warmup", duration:"10 min", effort:"Easy jog", zone:"Z1–Z2", detail:"5.0–5.5 mph. Get loose. Check form." },
-  { block:"Intervals ×8–10", duration:"24–30 min", effort:"Hard / Walk", zone:"Z4–Z5 / Z1", detail:"30 sec at 8–10 mph → 90 sec walk. Build to 10 rounds by Wk 8." },
-  { block:"Steady State", duration:"10 min", effort:"Moderate", zone:"Z3", detail:"5.5–6.5 mph. Controlled breathing." },
-  { block:"Cooldown", duration:"5 min", effort:"Easy", zone:"Z1", detail:"2.5 mph. Drop HR below 115 bpm." },
-];
-const THU_B = [
-  { block:"Warmup", duration:"5 min", effort:"Easy spin", zone:"Z1–Z2", detail:"Low resistance. 85–90 rpm. Hip circles." },
-  { block:"Pyramid Intervals ×5", duration:"30 min", effort:"Building Z2→Z5", zone:"Z2–Z5", detail:"1 min Z3 → 2 min Z4 → 1 min Z5 → 2 min Z2. Each round push harder." },
-  { block:"Cooldown", duration:"5 min", effort:"Very easy", zone:"Z1", detail:"Near zero resistance. Spin out legs." },
-];
-const THU_C = [
-  { block:"Warmup", duration:"5 min", effort:"Easy", zone:"Z1–Z2", detail:"20 s/m. Focus on leg drive → body swing → arm pull." },
-  { block:"2000m Time Trial", duration:"~8–10 min", effort:"Race pace", zone:"Z4–Z5", detail:"Go as hard as you can sustain. Track your time — monthly benchmark." },
-  { block:"Steady State", duration:"15 min", effort:"Moderate", zone:"Z3", detail:"24 s/m. Inhale on recovery, exhale on drive." },
-  { block:"Cooldown", duration:"5 min", effort:"Easy", zone:"Z1", detail:"Light paddle. Stretch calves and back." },
+// Thursday — Heavy Legs
+const THU_EX = [
+  { name:"Conventional Deadlift", tip:"Bar over mid-foot. Hinge, grip, brace hard. Drive floor away. Lock hips at top. Controlled descent or drop-and-reset.", sets:"5", reps:"3–5", tempo:"2-0-1", rest:"3–4 min" },
+  { name:"Front Rack Barbell Squat", tip:"Bar on front delts, elbows high. Upright torso is non-negotiable. Depth to parallel or below. Heavy is relative — form first.", sets:"4", reps:"4–6", tempo:"3-1-1", rest:"3 min" },
+  { name:"Bulgarian Split Squat (Heavy)", tip:"Same movement as Monday but heavier, fewer reps. Dumbbell or barbell. Full range, controlled every rep.", sets:"3", reps:"5–6 ea.", tempo:"3-0-1", rest:"2 min" },
+  { name:"Barbell Hip Thrust", tip:"Upper back on bench. Bar over hip crease (pad it). Drive hips up explosively. Squeeze glutes at top. Pause 1 sec.", sets:"4", reps:"6–8", tempo:"1-1-2", rest:"2 min" },
+  { name:"Nordic Hamstring Curl (or DB Leg Curl)", tip:"Nordic: anchor feet, lower with control — this is hard. DB leg curl: prone, curl DB between feet. Both build serious posterior chain.", sets:"3", reps:"5–8", tempo:"3-0-1", rest:"90 sec" },
+  { name:"Barbell or DB Good Morning", tip:"Slight knee bend. Hinge forward until parallel. Feel the hamstring load. Keep spine neutral throughout.", sets:"3", reps:"8–10", tempo:"3-1-1", rest:"90 sec" },
 ];
 
 const FRI_BOOT = [
@@ -1336,6 +784,7 @@ const FRI_BOOT = [
   { block:"Strength Block 2", duration:"5–6 min", effort:"Moderate", zone:"Z2–Z3", detail:"Track what weight you used for every movement." },
   { block:"Final Push + Cooldown", duration:"8–10 min", effort:"Hard → Easy", zone:"Z4→Z1", detail:"All-out on last block → instructor-led cooldown & stretch." },
 ];
+
 const FRI_ROPES = [
   { block:"Alternating Waves ×3", duration:"30s on / 30s rest", effort:"High", zone:"Z4–Z5", detail:"Alternate arms rapidly. Drive from hips. Full 30 sec at max effort." },
   { block:"Double Slams ×3", duration:"30s on / 30s rest", effort:"Max", zone:"Z5", detail:"Both ropes overhead, slam down. Explosive hip drive each time." },
@@ -1346,31 +795,51 @@ const FRI_ROPES = [
 const SAT_RUN = [
   { block:"Warmup Walk", duration:"5 min", effort:"Very easy", zone:"Z1", detail:"2.5–3.0 mph. Hip circles and ankle rolls while walking." },
   { block:"Easy Run", duration:"30–50 min", effort:"Conversational", zone:"Z2–Z3", detail:"You should speak in full sentences. 5.0–6.5 mph typical. This is NOT a race." },
-  { block:"Optional Row Cooldown", duration:"10 min", effort:"Easy", zone:"Z1–Z2", detail:"Easy strokes at 18–20 s/m. Flushes legs. Great before Sunday rest day." },
-  { block:"Mobility", duration:"10 min", effort:"Static", zone:"—", detail:"Hip flexors (couch stretch 90 sec ea.) · Hamstrings · Calf wall stretch · Thoracic rotation." },
+  { block:"Optional Row Cooldown", duration:"10 min", effort:"Easy", zone:"Z1–Z2", detail:"Easy strokes at 18–20 s/m. Flushes legs." },
+  { block:"Mobility", duration:"10 min", effort:"Static", zone:"—", detail:"Hip flexors (couch stretch) · Hamstrings · Calf wall stretch · Thoracic rotation." },
+];
+
+const SCULPT_FLOW = [
+  { name:"Sun Salutation Warmup", dur:"5 min", tip:"3–4 rounds, link breath to movement. Warm the spine." },
+  { name:"Warrior I + II Sequence", dur:"8 min", tip:"Hold each for 5 breaths. Sink deep into the front lunge. Feel the hip flexor stretch." },
+  { name:"Chair Pose Hold", dur:"4 min", tip:"3 sets of 45 sec. Thighs parallel. Arms overhead. Builds leg endurance." },
+  { name:"Side Plank + Thread Needle", dur:"5 min", tip:"30 sec side plank each side, then thread needle for thoracic rotation. 3 rounds." },
+  { name:"Warrior III Balance", dur:"5 min", tip:"30 sec each leg. Engage glutes hard. Works single-leg stability — great after leg days." },
+  { name:"Deep Hip Flow", dur:"8 min", tip:"Pigeon pose 90 sec ea. side, figure-four stretch, lizard lunge. Focus here if hips are tight." },
+  { name:"Core + Cool Down", dur:"10 min", tip:"Boat pose 30 sec × 3, then supine twists and savasana. Breathe deeply throughout." },
+];
+
+const FLOW_FLOW = [
+  { name:"Child's Pose Breathing", dur:"3 min", tip:"Wide-knee or narrow — whatever feels open. 10 deep breaths. Let go of the week." },
+  { name:"Cat-Cow + Thread Needle", dur:"5 min", tip:"8 rounds cat-cow, then thread needle 45 sec ea. side. Releases thoracic spine." },
+  { name:"Vinyasa Flow", dur:"12 min", tip:"Downdog → plank → cobra → downdog. Continuous movement. Match breath to motion." },
+  { name:"Yin Hip Opener Sequence", dur:"10 min", tip:"Pigeon 2 min ea. side, reclined figure-four 2 min ea. Hold passively — don't force." },
+  { name:"Supine Hamstring Stretch", dur:"5 min", tip:"Strap or hand, hold 90 sec ea. leg. Let gravity do the work. Breathe into the stretch." },
+  { name:"Spinal Twist + Savasana", dur:"10 min", tip:"Supine twist 2 min ea. side, then full savasana. This is recovery — don't skip it." },
 ];
 
 const PROGRESS_METRICS = [
-  { id:"weight",    label:"Body Weight (lbs)",    placeholder:"220" },
-  { id:"waist",     label:"Waist Circumference (in)", placeholder:"" },
-  { id:"squat",     label:"Back Squat 1RM (lbs)", placeholder:"" },
-  { id:"bench",     label:"Bench Press 1RM (lbs)", placeholder:"" },
-  { id:"pullups",   label:"Pull-Ups (max reps)",  placeholder:"" },
-  { id:"mile",      label:"1-Mile Run Time",       placeholder:"e.g. 8:30" },
-  { id:"fivek",     label:"5K Run Time",           placeholder:"e.g. 28:00" },
-  { id:"row2k",     label:"Row 2000m Time",        placeholder:"e.g. 8:45" },
-  { id:"rhr",       label:"Resting HR (bpm)",      placeholder:"" },
-  { id:"energy",    label:"Energy Level (1–10)",   placeholder:"" },
+  { id:"weight",  label:"Body Weight (lbs)",        placeholder:"220" },
+  { id:"waist",   label:"Waist Circumference (in)", placeholder:"" },
+  { id:"squat",   label:"Back Squat 1RM (lbs)",     placeholder:"" },
+  { id:"deadlift",label:"Deadlift 1RM (lbs)",       placeholder:"" },
+  { id:"bench",   label:"Bench Press 1RM (lbs)",    placeholder:"" },
+  { id:"pullups", label:"Pull-Ups (max reps)",       placeholder:"" },
+  { id:"mile",    label:"1-Mile Run Time",           placeholder:"e.g. 8:30" },
+  { id:"row2k",   label:"Row 2000m Time",            placeholder:"e.g. 8:45" },
+  { id:"rhr",     label:"Resting HR (bpm)",          placeholder:"" },
+  { id:"energy",  label:"Energy Level (1–10)",       placeholder:"" },
 ];
 
-// ── RENDER ───────────────────────────────────────────────────────────────────
-function renderExTable(tbodyId, exercises) {
+// ══════════════════════════════════════════════════════ RENDER
+
+function renderExTable(tbodyId, exercises, startIdx = 0) {
   const tbody = document.getElementById(tbodyId);
   if (!tbody) return;
   const saved = JSON.parse(localStorage.getItem('ex_' + tbodyId) || '{}');
   tbody.innerHTML = exercises.map((ex, i) => `
     <tr>
-      <td><div class="ex-num">${i+1}</div></td>
+      <td><div class="ex-num">${startIdx + i + 1}</div></td>
       <td>
         <div class="ex-name">${ex.name}</div>
         <div class="ex-tip">${ex.tip}</div>
@@ -1379,29 +848,34 @@ function renderExTable(tbodyId, exercises) {
       <td class="center"><div class="ex-val">${ex.reps}</div></td>
       <td class="center"><div class="ex-val">${ex.tempo}</div></td>
       <td class="center"><div class="ex-val">${ex.rest}</div></td>
-      <td>
-        <textarea class="log-input" rows="2"
-          placeholder="Weight · Notes"
-          data-ex="${tbodyId}-${i}"
-          onchange="saveExNote('${tbodyId}',${i},this.value)"
-        >${saved[i] || ''}</textarea>
-      </td>
-    </tr>
-  `).join('');
+      <td><textarea class="log-input" rows="2" placeholder="Weight · Notes"
+        onchange="saveExNote('${tbodyId}',${i},this.value)"
+      >${saved[i] || ''}</textarea></td>
+    </tr>`).join('');
 }
 
-function renderCardio(containerId, blocks) {
-  const el = document.getElementById(containerId);
+function renderCardio(id, blocks, cls = '') {
+  const el = document.getElementById(id);
   if (!el) return;
   el.innerHTML = blocks.map(b => `
-    <div class="cardio-block">
+    <div class="cardio-block ${cls}">
       <div class="c-name">${b.block}</div>
       <div class="c-duration">${b.duration}</div>
       <div class="c-zone">${b.zone}</div>
-      <div style="font-size:12px;color:var(--fg3);margin-bottom:6px;font-family:var(--font-mono);">Effort: ${b.effort}</div>
+      <div style="font-size:12px;color:var(--fg3);font-family:var(--font-mono);margin-bottom:6px;">Effort: ${b.effort}</div>
       <div class="c-detail">${b.detail}</div>
-    </div>
-  `).join('');
+    </div>`).join('');
+}
+
+function renderYogaGrid(id, poses) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = poses.map(p => `
+    <div class="yoga-card">
+      <div class="y-name">${p.name}</div>
+      <div class="y-dur">${p.dur}</div>
+      <div class="y-tip">${p.tip}</div>
+    </div>`).join('');
 }
 
 function renderProgress() {
@@ -1415,14 +889,10 @@ function renderProgress() {
           <div class="metric-week">
             <label>${wk}</label>
             <input type="text" placeholder="${wi===0?m.placeholder:''}"
-              id="prog-${m.id}-${wi}"
-              value="${(saved[m.id]||[])[wi]||''}"
-            >
-          </div>
-        `).join('')}
+              id="prog-${m.id}-${wi}" value="${(saved[m.id]||[])[wi]||''}">
+          </div>`).join('')}
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function renderRunLog() {
@@ -1432,17 +902,17 @@ function renderRunLog() {
   tbody.innerHTML = Array.from({length:12},(_,i)=>`
     <tr>
       <td><div class="wk-label">Wk ${i+1}</div></td>
-      <td><input placeholder="Date" value="${(saved[i]||{}).date||''}"></td>
-      <td><input placeholder="3.0 mi" value="${(saved[i]||{}).dist||''}"></td>
-      <td><input placeholder="28:00" value="${(saved[i]||{}).time||''}"></td>
+      <td><input placeholder="Date"    value="${(saved[i]||{}).date||''}"></td>
+      <td><input placeholder="3.0 mi"  value="${(saved[i]||{}).dist||''}"></td>
+      <td><input placeholder="28:00"   value="${(saved[i]||{}).time||''}"></td>
       <td><input placeholder="9:20/mi" value="${(saved[i]||{}).pace||''}"></td>
       <td><input placeholder="145 bpm" value="${(saved[i]||{}).hr||''}"></td>
-      <td><input placeholder="Notes…" value="${(saved[i]||{}).notes||''}"></td>
-    </tr>
-  `).join('');
+      <td><input placeholder="Notes…"  value="${(saved[i]||{}).notes||''}"></td>
+    </tr>`).join('');
 }
 
-// ── SAVE / LOAD ──────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════ SAVE/LOAD
+
 function saveExNote(tbodyId, idx, val) {
   const key = 'ex_' + tbodyId;
   const saved = JSON.parse(localStorage.getItem(key) || '{}');
@@ -1450,38 +920,33 @@ function saveExNote(tbodyId, idx, val) {
   localStorage.setItem(key, JSON.stringify(saved));
 }
 
+const DAY_FIELDS = {
+  mon: ['mon-pace','mon-hr','mon-felt'],
+  tue: ['tue-output','tue-pullups','tue-hr','tue-felt'],
+  wed: ['wed-split','wed-hr','wed-felt'],
+  thu: ['thu-dl','thu-sq','thu-split','thu-felt'],
+  fri: ['fri-class','fri-output','fri-rounds','fri-felt'],
+  sat: [],
+  sun: ['sun-style','sun-class','sun-feel','sun-felt'],
+};
+
 function saveDay(day) {
-  const fields = {
-    mon:  ['mon-pace','mon-hr','mon-felt'],
-    tue:  ['tue-output','tue-hr','tue-felt'],
-    wed:  ['wed-split','wed-hr','wed-felt'],
-    thu:  ['thu-machine','thu-output','thu-hr','thu-felt'],
-    fri:  ['fri-class','fri-output','fri-rounds','fri-felt'],
-  };
   const data = {};
-  (fields[day]||[]).forEach(id => {
-    const el = document.getElementById(id);
-    if (el) data[id] = el.value;
-  });
-  localStorage.setItem('day_' + day, JSON.stringify(data));
-  flashMsg(day + '-msg');
+  (DAY_FIELDS[day]||[]).forEach(id => { const el=document.getElementById(id); if(el) data[id]=el.value; });
+  localStorage.setItem('day_'+day, JSON.stringify(data));
+  flashMsg(day+'-msg');
 }
 
-function loadDay(day) {
-  const data = JSON.parse(localStorage.getItem('day_' + day) || '{}');
-  Object.entries(data).forEach(([id, val]) => {
-    const el = document.getElementById(id);
-    if (el) el.value = val;
-  });
+function loadDay(prefix) {
+  const day = prefix.substring(0,3).toLowerCase();
+  const data = JSON.parse(localStorage.getItem('day_'+day) || '{}');
+  Object.entries(data).forEach(([id,val]) => { const el=document.getElementById(id); if(el) el.value=val; });
 }
 
 function saveProgress() {
   const data = {};
   PROGRESS_METRICS.forEach(m => {
-    data[m.id] = [0,1,2,3].map(wi => {
-      const el = document.getElementById(`prog-${m.id}-${wi}`);
-      return el ? el.value : '';
-    });
+    data[m.id] = [0,1,2,3].map(wi => { const el=document.getElementById(`prog-${m.id}-${wi}`); return el?el.value:''; });
   });
   localStorage.setItem('progress', JSON.stringify(data));
   flashMsg('prog-msg');
@@ -1496,16 +961,9 @@ function clearProgress() {
 function saveRunLog() {
   const rows = document.querySelectorAll('#run-log-body tr');
   const data = {};
-  rows.forEach((row, i) => {
+  rows.forEach((row,i) => {
     const inputs = row.querySelectorAll('input');
-    data[i] = {
-      date:  inputs[0]?.value || '',
-      dist:  inputs[1]?.value || '',
-      time:  inputs[2]?.value || '',
-      pace:  inputs[3]?.value || '',
-      hr:    inputs[4]?.value || '',
-      notes: inputs[5]?.value || '',
-    };
+    data[i] = { date:inputs[0]?.value||'', dist:inputs[1]?.value||'', time:inputs[2]?.value||'', pace:inputs[3]?.value||'', hr:inputs[4]?.value||'', notes:inputs[5]?.value||'' };
   });
   localStorage.setItem('runlog', JSON.stringify(data));
   flashMsg('sat-msg');
@@ -1518,31 +976,36 @@ function flashMsg(id) {
   setTimeout(() => el.classList.remove('show'), 2500);
 }
 
-// ── NAV ──────────────────────────────────────────────────────────────────────
-function showSection(id) {
+// ══════════════════════════════════════════════════════ NAV
+
+function showSection(id, navClass, _) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active','orange-tab','purple-tab'));
   const section = document.getElementById(id);
-  if (section) { section.classList.add('active'); window.scrollTo({top:0}); }
-  const dayMap = { overview:0, monday:1, tuesday:2, wednesday:3, thursday:4, friday:5, saturday:6, progress:7 };
-  const navBtns = document.querySelectorAll('.nav button');
-  if (navBtns[dayMap[id]]) navBtns[dayMap[id]].classList.add('active');
-  loadDay(id.substring(0,3));
+  if (section) { section.classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+  const map = {overview:0,monday:1,tuesday:2,wednesday:3,thursday:4,friday:5,saturday:6,sunday:7,progress:8};
+  const btn = document.querySelectorAll('.nav button')[map[id]];
+  if (btn) { btn.classList.add('active'); if(navClass) btn.classList.add(navClass); }
+  loadDay(id);
 }
 
-// ── INIT ─────────────────────────────────────────────────────────────────────
-renderExTable('mon-body', MON_EXERCISES);
-renderExTable('tue-body', TUE_EXERCISES);
-renderExTable('wed-body', WED_EXERCISES);
+// ══════════════════════════════════════════════════════ INIT
+
+renderExTable('mon-body', MON_EX);
+renderExTable('tue-body', TUE_EX);
+renderExTable('wed-push', WED_PUSH);
+renderExTable('wed-pull', WED_PULL);
+renderExTable('wed-lower', WED_LOWER);
+renderExTable('wed-core', WED_CORE);
+renderExTable('thu-body', THU_EX);
 renderCardio('mon-cardio', MON_CARDIO);
 renderCardio('tue-cardio', TUE_CARDIO);
 renderCardio('wed-cardio', WED_CARDIO);
-renderCardio('thu-cardio-a', THU_A);
-renderCardio('thu-cardio-b', THU_B);
-renderCardio('thu-cardio-c', THU_C);
-renderCardio('fri-bootcamp', FRI_BOOT);
+renderCardio('fri-bootcamp', FRI_BOOT, 'orange-card');
 renderCardio('fri-ropes', FRI_ROPES);
-renderCardio('sat-run', SAT_RUN);
+renderCardio('sat-run', SAT_RUN, 'orange-card');
+renderYogaGrid('sculpt-grid', SCULPT_FLOW);
+renderYogaGrid('flow-grid', FLOW_FLOW);
 renderProgress();
 renderRunLog();
 </script>
